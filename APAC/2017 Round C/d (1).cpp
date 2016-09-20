@@ -18,7 +18,7 @@ bool canAliceWin(vector<int>& att,vector<int>& def,int maxA, int maxD, int n){
         if(att[i]==maxA&&def[i]==maxD)
             return true;
         else if(att[i]<maxA&&def[i]==maxD)
-            ny++;
+            y++;
         else if(att[i]==maxA&&def[i]<maxD)
             yn++;
         else
@@ -54,10 +54,10 @@ bool canAliceWin(vector<int>& att,vector<int>& def,int maxA, int maxD, int n){
 }
 
 int main(){
-	int t;
-	cin>>t;
-	int tc=1;
-	while(t--){
+    int t;
+    cin>>t;
+    int tc=1;
+    while(t--){
         int n;
         cin>>n;
         vector<int> att;
@@ -77,6 +77,6 @@ int main(){
             printf("Case #%d: YES\n",tc++);
         else
             printf("Case #%d: NO\n",tc++);
-	}
-	return 0;
+    }
+    return 0;
 }
