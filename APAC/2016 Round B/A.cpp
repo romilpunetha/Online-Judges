@@ -18,14 +18,15 @@ void ini(){
 
 void dijkstras(){
     for(int i=0;i<24;i++){
-        priority_queue<pair<ll,pair<int,int> > ,vector<pair<ll,pair<int,int> > >,greater<pair<ll,pair<int,int> > > >pq;
+        queue<pair<ll,pair<ll,ll> > > pq;
         pq.push({0,{1,i}});
         while(!pq.empty()){
-            pair<ll,pair<int,int> >pp=pq.top();pq.pop();
-            for(auto &it:g[pp.ss.ff]){
-                if(dist[i][it.ff]>dist[i][pp.ss.ff]+it.ss[pp.ss.ss]){
-                    dist[i][it.ff]=dist[i][pp.ss.ff]+it.ss[pp.ss.ss];
-                    pq.push({dist[i][it.ff],{it.ff,(it.ss[pp.ss.ss] + pp.ss.ss)%24}});
+            pair<ll,pair<ll,ll> >pp=pq.front();pq.pop();
+            ll s=pp.ss.ff,w=pp.ff,time=(pp.ss.ss)%24;
+            for(auto &it:g[s]){
+                if(dist[i][it.ff]>w+it.ss[time]){
+                    dist[i][it.ff]=w+it.ss[time];
+                    pq.push({dist[i][it.ff],{it.ff,(it.ss[time] + time)%24}});
                 }
             }
         }

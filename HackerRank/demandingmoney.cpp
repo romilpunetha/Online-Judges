@@ -4,38 +4,45 @@
 #define ss second
 using namespace std;
 typedef long long ll;
-int n,m,c,t;
-list<int>* g;
+ll ans=0,cnt=0,n,m,c,t;
+list<int>* g[35];
+vector<int>arr(35),visited(35,0);
+vector<vector<ll> >dp(35,vector<ll>(2,-1));
 
-bool myfun(const pair<int,pair<ll,ll> >&a,const pair<int,pair<ll,ll> >&b){
-    return a.ss.ff-a.ss.ss>b.ss.ff-b.ss.ss;
+ll util(auto start,ll val,int choice){
+    if(start>=n)return 0;
+    if(visited[start])return val;
+    if(dp[start][choice]!=-1)return dp[start][choice];
+    visited[start]=1;
+    dp[start][choice]=0;
+    for(auto &jt:g[start]){
+        if(choice){
+            for(auto &it:g[start]) visited[it]++;
+            dp[start][choice]+=util(jt,val+arr[start],0);
+            for(auto &it:g[start]) visited[it]--;
+        }
+        else{
+            if(!visited[jt]){
+                ll a=util(jt,val,1);
+                ll b=util(jt,val,0);
+            }
+            dp[start][choice]+=max(a,b);
+        }
+    }
+    visited[start]=0;
+    return dp[start][choice];
 }
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     cin>>n>>m;
-    vector<pair<int,pair<ll,ll> > >arr(n,{0,{0,0}});
-    unordered_set<int>st;
-    unordered_map<ll,int>mp;
-    g=new list<int>[n+1];
-    for(int i=0;i<n;i++)st.insert(i), cin>>arr[i].ss.ff;
+    for(int i=0;i<n;i++)st.insert(i), cin>>arr[i];
     for(int i=0;i<m;i++){
         int u,v;cin>>u>>v; u--,v--;
         g[u].push_back(v);
         g[v].push_back(u);
-        arr[u].ss.ss+=arr[v].ss.ff;
-        arr[v].ss.ss+=arr[u].ss.ff;
     }
-    for(auto &it:arr)mp[it.ss.ff-it.ss.ss]++;
-    sort(arr.begin(),arr.end(),myfun);
-    ll ans=0,cnt=0;
-    for(int i=0;i<n;i++){
-        if(st.find(arr[i].ff)!=st.end()){
-            ans+=arr[i].ss.ff;
-            st.erase(arr[i].ff);
-            for(auto &it:g[arr[i].ff])st.erase(it);
-        }
-    }
+    util(0);
     cout<<ans<<endl;
     return 0;
 }
