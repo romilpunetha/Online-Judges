@@ -1,0 +1,1 @@
+Bittorrent (p2p), Google BigTable, Google GFS, Google Spanner, and Amazon Dynamo, and they were useful for system design questions 
