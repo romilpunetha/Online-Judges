@@ -12,29 +12,20 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n,k;cin>>n>>k;
-    vector<ll>arr(n);
-    for(auto &it:arr)cin>>it;
-    sort(arr.begin(),arr.end());
-    ll ans=0,a=arr.size()-1,b=0;
-    while(k && a > b && arr[a-1] >= 0 && arr[b+1] < 0){
-        if(k > 1 && abs(arr[b] + arr[b+1]) >= arr[a] + arr[a-1])
-            ans += abs(arr[b] + arr[b+1]), k--, b += 2;
-        else ans += arr[a--];
-        k--;
+    int arr[2][123456];
+    int n, l = 0, r = 0, mx = 0, k = 0; cin>>n;
+    for(int i = 0; i < n; i++){
+        cin>> arr[0][i] >> arr[1][i];
+        l += arr[0][i];
+        r += arr[1][i];
     }
-    if(k){
-        if(k==1) ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--;
-        else if(arr[b+1] >= 0)
-            while(k)
-                ans += arr[a--], k-- ;
-        else if(arr[a-1] < 0)
-            while(k > 1)
-                ans =(ans + abs(arr[b]) + abs(arr[b+1])) * (arr[b] * arr[b+1] <0?-1:1), b += 2 ,k -= 2 ;
-        while(k)
-            ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--,a--;
+    mx = abs(l - r);
+    for(int i = 0; i < n; i++){
+        int p = l - arr[0][i] + arr[1][i];
+        int q = r - arr[1][i] + arr[0][i];
+        if(abs(p-q) > mx) mx = abs(p - q), k = i+1;
     }
-    cout<<ans<<endl;
+    cout<< k <<endl;
     return 0;
 }
 

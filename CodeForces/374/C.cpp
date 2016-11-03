@@ -9,32 +9,48 @@
 #define ss second
 using namespace std;
 typedef long long ll;
+int n, m, t,inf = 1e9+7;
+list<pair<int,int> >*g;
+vector<vector<int> >parent, dp;
+vector<bool>visited;
+
+void dfs(int u){
+    visited[u] = 1;
+    for(auto &it : g[u]){
+        ll v = it.ff, w = it.ss;
+        if(!visited[v]) dfs(v);
+        for(int i = 1; i <= n; i++){
+            if(dp[v][i-1] + w < dp[u][i]){
+                dp[u][i] = dp[v][i-1] + w;
+                parent[u][i] = v;
+            }
+        }
+    }
+}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n,k;cin>>n>>k;
-    vector<ll>arr(n);
-    for(auto &it:arr)cin>>it;
-    sort(arr.begin(),arr.end());
-    ll ans=0,a=arr.size()-1,b=0;
-    while(k && a > b && arr[a-1] >= 0 && arr[b+1] < 0){
-        if(k > 1 && abs(arr[b] + arr[b+1]) >= arr[a] + arr[a-1])
-            ans += abs(arr[b] + arr[b+1]), k--, b += 2;
-        else ans += arr[a--];
-        k--;
+    cin>>n>>m>>t;
+    g=new list<pair<int,int> >[n+1];
+    while(m--){
+        int u, v, w;
+        cin>>u>>v>>w;
+        g[u].push_back({v,w});
     }
-    if(k){
-        if(k==1) ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--;
-        else if(arr[b+1] >= 0)
-            while(k)
-                ans += arr[a--], k-- ;
-        else if(arr[a-1] < 0)
-            while(k > 1)
-                ans =(ans + abs(arr[b]) + abs(arr[b+1])) * (arr[b] * arr[b+1] <0?-1:1), b += 2 ,k -= 2 ;
-        while(k)
-            ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--,a--;
+    parent.resize(n+2,vector<int>(n+2));
+    dp.resize(n+2,vector<int>(n+2,inf));
+    visited.resize(n+2,0);
+    dp[n][0]=0;
+    parent[n][0]=n;
+    dfs(1);
+    int i = n,curr=1;
+    for(; i >= 0; i--) if(dp[1][i] <= t) break;
+    cout<< i+1 <<endl;
+    while(curr != n){
+        cout<< curr <<" ";
+        curr=parent[curr][i--];
     }
-    cout<<ans<<endl;
+    cout<< n <<endl;
     return 0;
 }
 

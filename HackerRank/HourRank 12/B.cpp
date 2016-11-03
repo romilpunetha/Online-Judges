@@ -13,15 +13,16 @@ int main(){
         cin>>arr[i];st2.insert(arr[i]);
     }
     sort(arr.begin(),arr.end());
-    int j=(n-1)/2,k=(n-1)/2+2;
-    for(int i=0;i<m;i++){
-        if(!(i&1))st1.insert(arr[j]),st2.erase(st2.find(arr[j])),j-=2;
-        else st1.insert(arr[k]),st2.erase(st2.find(arr[k])),k+=2;
+    int j = (n-1) / 2, k = (n-1) / 2 + 2;
+    for(int i = 0; i < m ; i++){
+        if(!(i&1)) st1.insert(arr[j]), st2.erase(st2.find(arr[j])), j -= 2;
+        else st1.insert(arr[k]), st2.erase(st2.find(arr[k])), k += 2;
     }
-    ll ans=0;
+    ll ans = 0;
     for(auto &it:st1){
         for(auto &jt:st2){
-            ans+=abs(it-jt);
+            ans +=
+                abs(it-jt);
         }
     }
     cout<<ans<<endl;

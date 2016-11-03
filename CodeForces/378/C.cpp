@@ -12,29 +12,39 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n,k;cin>>n>>k;
-    vector<ll>arr(n);
-    for(auto &it:arr)cin>>it;
-    sort(arr.begin(),arr.end());
-    ll ans=0,a=arr.size()-1,b=0;
-    while(k && a > b && arr[a-1] >= 0 && arr[b+1] < 0){
-        if(k > 1 && abs(arr[b] + arr[b+1]) >= arr[a] + arr[a-1])
-            ans += abs(arr[b] + arr[b+1]), k--, b += 2;
-        else ans += arr[a--];
-        k--;
+    int n; cin>>n;
+    vector<int>arr(n), res(n,0);
+    for(auto &it : arr) cin>> it;
+    int m; cin>>m;
+    vector<int>brr(m);
+    for(auto &it : brr) cin>> it;
+    stack<pair<int,char> >st;
+    int i = 0, j = 0, mx = 0, mn = 12345678, curr = 0, reduce = 0, flag = 0 ;
+    while(i < m){
+        if(!mx) mx = arr[j], reduce = brr[i]-arr[j], curr = j++, mn = arr[j];
+        else{
+            if(reduce == 0){ mx = 0, mn = 0, i++, curr = i; continue; }
+            else if(reduce < arr[j] || (reduce == 0 && mx == mn) ) {flag = 1; break;}
+            reduce -= arr[j];
+            mx = max(mx, arr[j]);
+            mn = min(mn, arr[j]);
+            if(arr[j] > arr[curr]) st.push({j,'L'}), curr = i;
+            else st.push({curr, 'R'});
+        }
+        tr6(mx, mn, reduce, curr, i , j);
+        j++;
     }
-    if(k){
-        if(k==1) ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--;
-        else if(arr[b+1] >= 0)
-            while(k)
-                ans += arr[a--], k-- ;
-        else if(arr[a-1] < 0)
-            while(k > 1)
-                ans =(ans + abs(arr[b]) + abs(arr[b+1])) * (arr[b] * arr[b+1] <0?-1:1), b += 2 ,k -= 2 ;
-        while(k)
-            ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--,a--;
+    if(flag) cout<<"NO\n";
+    else{
+        cout<<"YES\n";
+        while(!st.empty()) {
+            auto p = st.top();
+            st.pop();
+            cout<< p.ff<< " " << p.ss<<endl;
+        }
     }
-    cout<<ans<<endl;
     return 0;
 }
+
+
 

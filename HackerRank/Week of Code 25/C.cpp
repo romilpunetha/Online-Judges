@@ -5,6 +5,9 @@
 #define tr4(a, b, c, d)       cerr << #a << ":\t" << a << "\t|\t" << #b << ":\t" << b << "\t|\t" << #c << ":\t" << c << "\t|\t" << #d << ":\t" << d << endl
 #define tr5(a, b, c, d, e)    cerr << #a << ":\t" << a << "\t|\t" << #b << ":\t" << b << "\t|\t" << #c << ":\t" << c << "\t|\t" << #d << ":\t" << d << "\t|\t" << #e << ":\t" << e << endl
 #define tr6(a, b, c, d, e, f) cerr << #a << ":\t" << a << "\t|\t" << #b << ":\t" << b << "\t|\t" << #c << ":\t" << c << "\t|\t" << #d << ":\t" << d << "\t|\t" << #e << ":\t" << e << "\t|\t" << #f << ":\t" << f << endl
+#define M 1000000009
+#define p 999983
+#define pinverse 943912055
 #define ff first
 #define ss second
 using namespace std;
@@ -12,29 +15,20 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n,k;cin>>n>>k;
-    vector<ll>arr(n);
-    for(auto &it:arr)cin>>it;
-    sort(arr.begin(),arr.end());
-    ll ans=0,a=arr.size()-1,b=0;
-    while(k && a > b && arr[a-1] >= 0 && arr[b+1] < 0){
-        if(k > 1 && abs(arr[b] + arr[b+1]) >= arr[a] + arr[a-1])
-            ans += abs(arr[b] + arr[b+1]), k--, b += 2;
-        else ans += arr[a--];
-        k--;
+    int test; cin>>test; while(test--){
+        ll a, b, d, ans = 0;
+        cin>> a >> b >> d;
+        if(a < b) swap(a, b);
+        if(d == 0) ans = 0;
+        else if(d == b) ans = 1;
+        else if(d < a) ans = 2;
+        else if(d >= a){
+            ans = d / a;
+            d = d % a;
+            if(d) ans ++;
+        }
+        cout<< ans <<endl;
     }
-    if(k){
-        if(k==1) ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--;
-        else if(arr[b+1] >= 0)
-            while(k)
-                ans += arr[a--], k-- ;
-        else if(arr[a-1] < 0)
-            while(k > 1)
-                ans =(ans + abs(arr[b]) + abs(arr[b+1])) * (arr[b] * arr[b+1] <0?-1:1), b += 2 ,k -= 2 ;
-        while(k)
-            ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--,a--;
-    }
-    cout<<ans<<endl;
     return 0;
 }
 

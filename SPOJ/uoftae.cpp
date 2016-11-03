@@ -9,32 +9,27 @@
 #define ss second
 using namespace std;
 typedef long long ll;
-
+int mod = 1e9 + 7;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n,k;cin>>n>>k;
-    vector<ll>arr(n);
-    for(auto &it:arr)cin>>it;
-    sort(arr.begin(),arr.end());
-    ll ans=0,a=arr.size()-1,b=0;
-    while(k && a > b && arr[a-1] >= 0 && arr[b+1] < 0){
-        if(k > 1 && abs(arr[b] + arr[b+1]) >= arr[a] + arr[a-1])
-            ans += abs(arr[b] + arr[b+1]), k--, b += 2;
-        else ans += arr[a--];
-        k--;
+    int test;cin>>test;while(test--){
+        int n,m;cin>>n>>m;
+        vector<vector<ll> >dp(210,vector<ll>(210,0));
+        vector<pair<int,int> >arr(n);
+        for(auto &it:arr) cin>> it.ff >> it.ss;
+        dp[n][0]=1;
+        for(int i = n-1; i >= 0; i--){
+            for(int j = 0; j <= m; j++){
+                for(int k = arr[i].ff; k <= arr[i].ss; k++){
+                    if(j-k>=0){
+                        dp[i][j] += dp[i+1][j-k];
+                        dp[i][j] %= mod;
+                    }
+                }
+            }
+        }
+        cout<< dp[0][m] <<endl;
     }
-    if(k){
-        if(k==1) ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--;
-        else if(arr[b+1] >= 0)
-            while(k)
-                ans += arr[a--], k-- ;
-        else if(arr[a-1] < 0)
-            while(k > 1)
-                ans =(ans + abs(arr[b]) + abs(arr[b+1])) * (arr[b] * arr[b+1] <0?-1:1), b += 2 ,k -= 2 ;
-        while(k)
-            ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--,a--;
-    }
-    cout<<ans<<endl;
     return 0;
 }
 

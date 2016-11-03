@@ -12,27 +12,21 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n,k;cin>>n>>k;
-    vector<ll>arr(n);
-    for(auto &it:arr)cin>>it;
-    sort(arr.begin(),arr.end());
-    ll ans=0,a=arr.size()-1,b=0;
-    while(k && a > b && arr[a-1] >= 0 && arr[b+1] < 0){
-        if(k > 1 && abs(arr[b] + arr[b+1]) >= arr[a] + arr[a-1])
-            ans += abs(arr[b] + arr[b+1]), k--, b += 2;
-        else ans += arr[a--];
-        k--;
+    int n,m;
+    cin>> n >> m;
+    multiset<int> a,b;
+    while(n--){
+        int t;cin>> t; a.insert(t);
     }
-    if(k){
-        if(k==1) ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--;
-        else if(arr[b+1] >= 0)
-            while(k)
-                ans += arr[a--], k-- ;
-        else if(arr[a-1] < 0)
-            while(k > 1)
-                ans =(ans + abs(arr[b]) + abs(arr[b+1])) * (arr[b] * arr[b+1] <0?-1:1), b += 2 ,k -= 2 ;
-        while(k)
-            ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--,a--;
+    while(m--){
+        int t;cin>> t; b.insert(t);
+    }
+    int ans = 0;
+    for(int i = 1; i<= 100; i++){
+        int flag = 1;
+        for(auto &it: a) flag &= (i % it == 0);
+        for(auto &it: b) flag &= (it % i == 0);
+        ans += flag;
     }
     cout<<ans<<endl;
     return 0;

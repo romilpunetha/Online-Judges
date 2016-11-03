@@ -12,29 +12,17 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n,k;cin>>n>>k;
-    vector<ll>arr(n);
-    for(auto &it:arr)cin>>it;
-    sort(arr.begin(),arr.end());
-    ll ans=0,a=arr.size()-1,b=0;
-    while(k && a > b && arr[a-1] >= 0 && arr[b+1] < 0){
-        if(k > 1 && abs(arr[b] + arr[b+1]) >= arr[a] + arr[a-1])
-            ans += abs(arr[b] + arr[b+1]), k--, b += 2;
-        else ans += arr[a--];
-        k--;
+    string s1, s2;
+    int k;
+    cin>> s1 >> s2 >> k;
+    int i = 0, j = 0, l1 = s1.length(), l2 = s2.length();
+    while(s1[i] && s2[j] && s1[i] == s2[j]) i++, j++;
+    int op = l2 - j + l1 - i;
+    if(op > k) cout<<"No\n";
+    else{
+        if(k >= l1 + l2 || (k - op) % 2 == 0) cout<< "Yes\n";
+        else cout<< "No\n";
     }
-    if(k){
-        if(k==1) ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--;
-        else if(arr[b+1] >= 0)
-            while(k)
-                ans += arr[a--], k-- ;
-        else if(arr[a-1] < 0)
-            while(k > 1)
-                ans =(ans + abs(arr[b]) + abs(arr[b+1])) * (arr[b] * arr[b+1] <0?-1:1), b += 2 ,k -= 2 ;
-        while(k)
-            ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--,a--;
-    }
-    cout<<ans<<endl;
     return 0;
 }
 

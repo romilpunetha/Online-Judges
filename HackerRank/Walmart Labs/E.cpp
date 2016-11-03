@@ -9,30 +9,46 @@
 #define ss second
 using namespace std;
 typedef long long ll;
+int n, m, q, food, person;
+list<int> *g;
+unordered_set<int> path;
+
+ll lca(int a, int b, int p = 0){
+    ll dist = 0;
+    if(p) path.insert(a), path.insert(b);
+    while(a != b){
+        if(a>b) a >>= 1;
+        else b >>= 1;
+        if(p) path.insert(a), path.insert(b);
+        dist ++;
+    }
+    return dist;
+}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n,k;cin>>n>>k;
-    vector<ll>arr(n);
-    for(auto &it:arr)cin>>it;
-    sort(arr.begin(),arr.end());
-    ll ans=0,a=arr.size()-1,b=0;
-    while(k && a > b && arr[a-1] >= 0 && arr[b+1] < 0){
-        if(k > 1 && abs(arr[b] + arr[b+1]) >= arr[a] + arr[a-1])
-            ans += abs(arr[b] + arr[b+1]), k--, b += 2;
-        else ans += arr[a--];
-        k--;
+    cin>>n>>m>>q;
+    g = new list<int>[m+1];
+    for(int i = 1; i <=m; i++){
+        int t; cin>>t;
+        while(t--){
+            int p; cin>>p;
+            g[i].push_back(p);
+        }
     }
-    if(k){
-        if(k==1) ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--;
-        else if(arr[b+1] >= 0)
-            while(k)
-                ans += arr[a--], k-- ;
-        else if(arr[a-1] < 0)
-            while(k > 1)
-                ans =(ans + abs(arr[b]) + abs(arr[b+1])) * (arr[b] * arr[b+1] <0?-1:1), b += 2 ,k -= 2 ;
-        while(k)
-            ans = (ans + abs(arr[a])) * (arr[a] < 0 ? -1 : 1), k--,a--;
+    ll ans = 0, start = 1;
+    while(q--){
+        cin>> food >> person;
+        ans += lca(start, person,1);
+        ll diff = LLONG_MAX;
+        for(auto &it : g[food]){
+            for(auto &jt : path){
+                diff = min(diff, lca(it,jt));
+            }
+        }
+        path.clear();
+        ans += diff * 2;
+        start = person;
     }
     cout<<ans<<endl;
     return 0;
