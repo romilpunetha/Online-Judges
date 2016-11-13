@@ -11,23 +11,39 @@
 #define ss second
 using namespace std;
 typedef long long ll;
-ll n, m;
-unordered_map<ll, bool>dp;
-vector<ll> arr(15);
 
-bool util(int n,int chance){
-    bool ans = 0;
-    for(int i = 0; i < n; i++){
-
+ll powe(ll a, ll b, ll mod){
+    ll res=1;
+    while (b){
+        if (b&1) res= (res *a)%mod;
+        a=(a*a)%mod;
+        b>>=1;
     }
+    return res;
+}
+ll mmi ( ll n, ll m){
+    return powe(n,m-2,m) % m;
 }
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin>> n >> m;
-    for(auto i = 0; i < m; i++ ) cin>> arr[i];
-    if(util(n,0)) cout<< "First\n";
-    else cout<< "Second\n";
+    int q; cin >> q;
+    while ( q-- ){
+        ll a, b, d, m, sum = 0;
+        cin >> a >> b >> d >> m;
+        ll n = (b - a - 1) / d + 1 ;
+        if(a == b) n = 0;
+        if (d & 1){
+            ll st1 = a ^ 1, st2 = (a + d) ^ 1, n1 = max(n / 2, n - n/2), n2 = min(n / 2, n - n / 2);
+            d <<= 1;
+            sum = ((n1%m  * (((2 * st1) % m + (n1 - 1)%m * d) % m) % m) * mmi(2,m) ) % m;
+            sum += ((n2%m  * (((2 * st2) % m + (n2 - 1)%m * d) % m) % m) * mmi(2,m) ) % m;
+        }
+        else{
+            sum = ((n%m  * (((2 * (a ^ 1) % m) + (n - 1)%m * d) % m) % m) * mmi(2,m)  ) % m;
+        }
+        cout << sum % m << endl;
+    }
     return 0;
 }
 

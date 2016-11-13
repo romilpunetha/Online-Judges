@@ -1,3 +1,4 @@
+
 #include<bits/stdc++.h>
 #define tr1(x)                cerr << #x << ":\t" << x << endl
 #define tr2(x, y)             cerr << #x << ":\t" << x << "\t|\t" << #y << ":\t" << y << endl
@@ -11,23 +12,38 @@
 #define ss second
 using namespace std;
 typedef long long ll;
-ll n, m;
-unordered_map<ll, bool>dp;
-vector<ll> arr(15);
-
-bool util(int n,int chance){
-    bool ans = 0;
-    for(int i = 0; i < n; i++){
-
-    }
-}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin>> n >> m;
-    for(auto i = 0; i < m; i++ ) cin>> arr[i];
-    if(util(n,0)) cout<< "First\n";
-    else cout<< "Second\n";
+    ll test; cin>> test;
+    for (int tt = 1; tt <= test; tt++) {
+        ll n = 0, ans = 0;
+        ll i,j;
+        string s; cin >> s >> i >> j;
+        n = s.size();
+        ll cb=0, cr=0;
+        for(int ii = 0; ii < n; ii++){
+            cb += s[ii] == 'B';
+            cr += s[ii] == 'R';
+        }
+        i--; j--;
+        ll blocki = i/n;
+        ll blockj = j/n;
+        if(blocki == blockj) {
+            i = i%n;
+            j = j%n;
+            for(int k = i; k <= j; k++) ans += (s[k] == 'B') ;
+        }
+        else {
+            ll total = (blockj - blocki -1)*cb;
+            ans += total;
+            i = i%n;
+            for(int k = i; k<=n-1; k++) ans += (s[k] == 'B') ;
+            j = j%n;
+            for(int k = 0; k<=j; k++) ans += (s[k] == 'B') ;
+        }
+        cout<< "Case #" << tt<<": " << ans << endl;
+    }
     return 0;
 }
 

@@ -11,23 +11,39 @@
 #define ss second
 using namespace std;
 typedef long long ll;
-ll n, m;
-unordered_map<ll, bool>dp;
-vector<ll> arr(15);
 
-bool util(int n,int chance){
-    bool ans = 0;
-    for(int i = 0; i < n; i++){
+int n;
+vector<int>arr;
+vector<pair<int,int> >ed;
 
+bool check(int start){
+    int timer = 0;
+    for(int j = 0; j < n; j++){
+        if(arr[start] < timer) return false;
+        timer++;
+        start = (start + 1) % n;
     }
+    return true;
 }
+
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin>> n >> m;
-    for(auto i = 0; i < m; i++ ) cin>> arr[i];
-    if(util(n,0)) cout<< "First\n";
-    else cout<< "Second\n";
+    cin >> n;
+    arr = vector<int>(n);
+    unordered_set<int> mp2;
+    for(int i = 0; i < n; i++){
+        cin >> arr[i];
+        if(mp2.find(arr[i]) == mp2.end()) mp2.insert(arr[i]), ed.push_back({arr[i], i});
+    }
+    sort(ed.begin(), ed.end());
+    int st = 0, endd = (int)ed.size() - 1;
+    while(st < endd){
+        int mid = (st + endd) >> 1;
+        if(check( ed[mid].ss + 1 ) % n ) st = mid + 1;
+        else endd = mid;
+    }
+    cout << ed[st].ss + 1 << endl;
     return 0;
 }
 
