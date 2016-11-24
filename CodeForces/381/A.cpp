@@ -11,39 +11,20 @@
 #define ss second
 using namespace std;
 typedef long long ll;
-
-int n;
-vector<int>bit(1e6,0);
-
-void update(int i, int val){
-    while(i < 1e6){
-        bit[i] += val;
-        i += i & -i;
-    }
-}
-
-int query(int i){
-    int res = 0;
-    while(i){
-        res += bit[i];
-        i -= i & -i;
-    }
-    return res;
-}
-
+ll n, a, b, c, ans;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin >> n;
-    for(int i = n + 1; i <= n + n; i++){
-        int t; cin >> t;
-        if(t >= n) continue;
-        update(i - n + 1, 1);
-        update(i - t + 1, -1);
-    }
-    int mx = 0, ans = 0;
-    for(int i = 1; i <= n; i++ ){
-        int p = query(i) + query(i + n);
-        if(p > mx) mx = p, ans = i;
+    cin >> n >> a >> b >> c;
+    if(n % 4 == 0) return cout << 0 << endl, 0;
+    ll ans = LLONG_MAX;
+    for(int i = 0; i <= 100; i++){
+        for(int j = 0; j <= 100; j++){
+            for(int k = 0; k <= 100; k++){
+                if((n + i + 2 * j + 3 * k) % 4 == 0){
+                    ans = min(ans, a * i + b * j + c * k);
+                }
+            }
+        }
     }
     cout << ans << endl;
     return 0;

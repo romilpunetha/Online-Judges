@@ -12,38 +12,35 @@
 using namespace std;
 typedef long long ll;
 
-int n;
-vector<int>bit(1e6,0);
-
-void update(int i, int val){
-    while(i < 1e6){
-        bit[i] += val;
-        i += i & -i;
-    }
-}
-
-int query(int i){
-    int res = 0;
-    while(i){
-        res += bit[i];
-        i -= i & -i;
-    }
-    return res;
-}
-
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin >> n;
-    for(int i = n + 1; i <= n + n; i++){
-        int t; cin >> t;
-        if(t >= n) continue;
-        update(i - n + 1, 1);
-        update(i - t + 1, -1);
+    ll n, m, k, x, s; cin >> n >> m >> k >> x >> s;
+    vector<pair<ll,ll> >mm(m), kk(k);
+    for(auto &it : mm) cin >> it.ff;
+    for(auto &it : mm) cin >> it.ss;
+    for(auto &it : kk) cin >> it.ff;
+    for(auto &it : kk) cin >> it.ss;
+    ll ans = n * x;
+    for(auto &it : kk){
+        if(it.ss <= s) ans = min(ans, max(0LL, (n - it.ff) * x));
     }
-    int mx = 0, ans = 0;
-    for(int i = 1; i <= n; i++ ){
-        int p = query(i) + query(i + n);
-        if(p > mx) mx = p, ans = i;
+    for( auto &it : mm ){
+        ll &time = it.ff, &cost = it.ss;
+        if(cost <= s) ans = min(ans, n * time);
+        int lo = 0, hi = k - 1;
+        while(lo < hi){
+            int mid = (hi + lo) >> 1;
+            if(cost + kk[mid].ss > s) hi = mid;
+            else{
+                ll tot = (n - kk[mid].ff) * time;
+                ans = min(ans, tot);
+                lo = mid + 1;
+            }
+        }
+        if(cost + kk[lo].ss <= s){
+            ll tot = (n - kk[lo].ff) * time;
+            ans = min(ans, tot);
+        }
     }
     cout << ans << endl;
     return 0;

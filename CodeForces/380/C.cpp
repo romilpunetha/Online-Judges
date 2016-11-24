@@ -11,41 +11,39 @@
 #define ss second
 using namespace std;
 typedef long long ll;
+ll n, k , s, t;
+vector<ll>st;
 
-int n;
-vector<int>bit(1e6,0);
-
-void update(int i, int val){
-    while(i < 1e6){
-        bit[i] += val;
-        i += i & -i;
+bool is_valid(ll c){
+    ll time = 0;
+    for(int i = 1; i < k + 2; i++){
+        ll dist = st[i] - st[i - 1];
+        if(dist > c) return false;
+        ll x = min(dist, c - dist);
+        time += x + 2 * (dist - x);
     }
-}
-
-int query(int i){
-    int res = 0;
-    while(i){
-        res += bit[i];
-        i -= i & -i;
-    }
-    return res;
+    if(time <= t) return true;
+    return false;
 }
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin >> n;
-    for(int i = n + 1; i <= n + n; i++){
-        int t; cin >> t;
-        if(t >= n) continue;
-        update(i - n + 1, 1);
-        update(i - t + 1, -1);
+    cin >> n >> k >> s >> t;
+    vector<pair<ll,ll> >arr(n);
+    st = vector<ll>(k + 2);
+    for(auto &it : arr) cin >> it.ff >> it.ss;
+    for(int i = 1; i <= k; i++) cin >> st[i];
+    st[0] = 0, st[k+1] = s;
+    sort(st.begin(), st.end());
+    ll st = 0, ed = INT_MAX, mid, val = INT_MAX, ans = INT_MAX;
+    while(st <= ed){
+        mid = st + (ed - st) / 2;
+        if( is_valid( mid ) ) val = mid, ed = mid - 1;
+        else st = mid + 1;
     }
-    int mx = 0, ans = 0;
-    for(int i = 1; i <= n; i++ ){
-        int p = query(i) + query(i + n);
-        if(p > mx) mx = p, ans = i;
-    }
-    cout << ans << endl;
+    for(auto &it : arr) if(it.ss >= val) ans = min(ans, it.ff);
+    if(ans == INT_MAX) cout << -1 << endl;
+    else cout << ans << endl;
     return 0;
 }
 

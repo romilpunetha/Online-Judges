@@ -11,39 +11,37 @@
 #define ss second
 using namespace std;
 typedef long long ll;
-
-int n;
-vector<int>bit(1e6,0);
-
-void update(int i, int val){
-    while(i < 1e6){
-        bit[i] += val;
-        i += i & -i;
-    }
-}
-
-int query(int i){
-    int res = 0;
-    while(i){
-        res += bit[i];
-        i -= i & -i;
-    }
-    return res;
-}
-
+int n, m;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin >> n;
-    for(int i = n + 1; i <= n + n; i++){
-        int t; cin >> t;
-        if(t >= n) continue;
-        update(i - n + 1, 1);
-        update(i - t + 1, -1);
+    cin >> n >> m;
+    vector<vector<ll> >arr(n, vector<ll>(m)), ver, hor;
+    for( int i = 0; i < n; i++ ){
+        for(int j = 0; j < m; j++){
+            cin >> arr[i][j];
+        }
     }
-    int mx = 0, ans = 0;
-    for(int i = 1; i <= n; i++ ){
-        int p = query(i) + query(i + n);
-        if(p > mx) mx = p, ans = i;
+    ver = hor = arr;
+    for( int i = 0; i < n; i++ ){
+        for(int j = 1; j < m; j++){
+            hor[i][j] += hor[i][j - 1];
+        }
+    }
+    for( int i = 1; i < n; i++ ){
+        for(int j = 0; j < m; j++){
+            ver[i][j] += ver[i - 1][j];
+        }
+    }
+    ll ans = 0;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            if(arr[i][j]) continue;
+            if(ver[i][j])  ans++;
+            if(ver[n - 1][j] - ver[i][j] > 0) ans++;
+            if(hor[i][m - 1] - hor[i][j] > 0) ans++;
+            if(hor[i][j]) ans++;
+            //tr3(i, j, ans);
+        }
     }
     cout << ans << endl;
     return 0;

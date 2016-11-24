@@ -12,40 +12,40 @@
 using namespace std;
 typedef long long ll;
 
-int n;
-vector<int>bit(1e6,0);
+int n, w = 0, b = 0;
+list<int> *g;
+vector<int> color, visited;
 
-void update(int i, int val){
-    while(i < 1e6){
-        bit[i] += val;
-        i += i & -i;
+void dfs(int u){
+    for(auto &v : g[u]){
+        if(!visited[v] && color[v] == color[u]){
+            visited[v] = 1;
+            dfs(v);
+        }
     }
-}
-
-int query(int i){
-    int res = 0;
-    while(i){
-        res += bit[i];
-        i -= i & -i;
-    }
-    return res;
 }
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     cin >> n;
-    for(int i = n + 1; i <= n + n; i++){
-        int t; cin >> t;
-        if(t >= n) continue;
-        update(i - n + 1, 1);
-        update(i - t + 1, -1);
+    g = new list<int>[n];
+    color = vector<int>(n);
+    visited = vector<int>(n, 0);
+    for(auto &it : color) cin >> it;
+    for(int i = 1; i < n; i++){
+        int u, v; cin >> u >> v; u--, v--;
+        g[u].push_back(v);
+        g[v].push_back(u);
     }
-    int mx = 0, ans = 0;
-    for(int i = 1; i <= n; i++ ){
-        int p = query(i) + query(i + n);
-        if(p > mx) mx = p, ans = i;
+    for(int i = 0; i < n; i++){
+        if(!visited[i]){
+            visited[i] = 1;
+            dfs(i);
+            if(color[i] == 0) b ++;
+            else w ++;
+        }
     }
-    cout << ans << endl;
+    cout << min(b,w) << endl;
     return 0;
 }
 
