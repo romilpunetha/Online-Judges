@@ -19,6 +19,15 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    ll n; cin >> n;
+    ll a = 1, b = 1, c = 2, cnt = 0;
+    while(c <= n){
+        a = b;
+        b = c;
+        c = a + b;
+        cnt++;
+    }
+    cout << cnt << endl;
     return 0;
 }
 

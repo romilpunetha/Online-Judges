@@ -17,8 +17,33 @@
 using namespace std;
 typedef long long ll;
 
+ll maxsum(ll n, ll arr[]){
+    if(n == 1) return arr[0];
+    ll ans = 0;
+    for(int i = 0; i < n; i++){
+        ll temp[n - 1];
+        ll l = i - 1 >= 0? arr[i - 1] : 1;
+        ll r = i + 1 < n? arr[i + 1] : 1;
+        for(int j = 0, c = 0; j < n; j++){
+            if(j == i) continue;
+            temp[c++] = arr[j];
+        }
+        ans = max(ans, l * r + maxsum(n - 1, temp));
+    }
+    return ans;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int test; cin >> test;
+    for(int i = 1; i <= test; i++){
+        cout << "#" << i << " ";
+        int n;
+        cin >> n;
+        ll arr[n];
+        for(int i = 0; i < n; i++) cin >> arr[i];
+        cout << maxsum(n, arr) << endl;
+    }
     return 0;
 }
 

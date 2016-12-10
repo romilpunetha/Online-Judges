@@ -19,6 +19,24 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n; cin >> n;
+    while(n--){
+        string s; cin >> s;
+        unordered_map<char, int>mp;
+        for(auto &i : s) mp[i]++;
+        int ans = 0;
+        ans += mp['A'];
+        ans += mp['E'];
+        ans += mp['I'];
+        ans += mp['O'];
+        ans += mp['U'];
+        ans += mp['a'];
+        ans += mp['e'];
+        ans += mp['i'];
+        ans += mp['o'];
+        ans += mp['u'];
+        cout << ans << endl;
+    }
     return 0;
 }
 

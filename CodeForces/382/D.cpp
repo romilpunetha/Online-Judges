@@ -17,8 +17,25 @@
 using namespace std;
 typedef long long ll;
 
+ll n;
+vector<bool> sieve(1e6 + 10,1);
+
+bool is_prime(ll n){
+    for(ll i = 2; i * i <= n; i++) if(n % i == 0) return 0;
+    return 1;
+}
+
+ll solve(ll n){
+    if(is_prime(n)) return 1;
+    if(n % 2 == 0) return 2;
+    if(is_prime(n - 2)) return 2;
+    return 3;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n;
+    cout << solve(n) << endl;
     return 0;
 }
 

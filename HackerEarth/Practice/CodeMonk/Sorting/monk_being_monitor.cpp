@@ -19,6 +19,21 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int test; cin >> test; while(test--){
+        int ans = -1, n; cin >> n;
+        unordered_map<int,int> mp;
+        for(int i = 0; i < n; i++){ int t; cin >> t; mp[t]++; }
+        vector<pair<int,int>>arr(mp.size());
+        int j = 0;
+        for(auto &it : mp) arr[j++] = {it.ff, it.ss};
+        sort(arr.begin(), arr.end());
+        int mx = arr[j - 1].ss;
+        for(int i = j - 1; i >= 0; i--){
+            if(arr[i].ss > mx) mx = arr[i].ss;
+            else ans = max(ans, mx - arr[i].ss);
+        }
+        cout << (ans == 0? -1 : ans ) << endl;
+    }
     return 0;
 }
 

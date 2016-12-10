@@ -19,6 +19,20 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n, q; cin >> n >> q;
+    vector<pair<ll, ll> >arr(n + 2);
+    arr[n + 1] = {LLONG_MAX, LLONG_MAX};
+    vector<ll> pre(n + 2, 0);
+    for(int i = 1; i <= n; i++){
+        cin >> arr[i].ff >> arr[i].ss;
+        pre[i] = pre[i - 1] + arr[i].ss - arr[i].ff + 1;
+    }
+    pre[n + 1] = pre[n] + 1;
+    while(q--){
+        ll x; cin >> x;
+        int i = lower_bound(all(pre), x) - pre.begin();
+        cout << arr[i].ff + x - pre[i - 1] - 1 << endl;
+    }
     return 0;
 }
 

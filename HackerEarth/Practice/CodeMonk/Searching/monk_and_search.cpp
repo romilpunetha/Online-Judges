@@ -19,6 +19,20 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n; cin >> n;
+    vector<int>arr(n);
+    for(auto &it : arr) cin >> it;
+    sort(all(arr));
+    int q; cin >> q; while(q--){
+        int c, x, ans = 0; cin >> c >> x;
+        if(c == 0){
+            ans = n - ( lower_bound(all(arr), x) - arr.begin() );
+        }
+        else{
+            ans = n - ( upper_bound(all(arr), x) - arr.begin() );
+        }
+        cout << ans << endl;
+    }
     return 0;
 }
 

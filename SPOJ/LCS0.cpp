@@ -19,6 +19,19 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    string s, t;
+    cin >> s >> t;
+    bitset<50002> dp, prev;
+    dp[0] = prev[0] = 0;
+    int m = s.length(), n = t.length();
+    for(int i = 1; i <= m; i++){
+        for(int j = 1; j <= n; j++){
+            if( s[i - 1] == t[j - 1] ) dp[j] = 1;
+            else dp[j] = max(dp[j - 1], prev[j]);
+        }
+        swap(dp, prev);
+    }
+    cout << prev[n] << endl;
     return 0;
 }
 

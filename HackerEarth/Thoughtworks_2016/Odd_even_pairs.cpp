@@ -19,6 +19,16 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    ll o = 0, e = 0, n = 0;
+    cin >> n;
+    while(n--){
+        int t; cin >> t;
+        o += t & 1;
+        e += (t & 1) == 0;
+    }
+    ll s = (o * (o - 1)) / 2;
+    ll t = (e * (e - 1)) /2;
+    cout << abs(s + t - o * e) << endl;
     return 0;
 }
 

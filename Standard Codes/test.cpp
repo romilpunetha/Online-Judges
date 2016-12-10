@@ -17,8 +17,36 @@
 using namespace std;
 typedef long long ll;
 
+void parse2(string &s, string &t){
+    //tr2(s, t);
+    if(s == "toupper") for(auto &it : t) it = toupper(it);
+    else if(s == "tolower") for(auto &it : t) it = tolower(it);
+    else{
+        auto it = s.find("_");
+        string temp = s.substr(it + 1);
+        t += temp;
+    }
+}
+
+
+void parse(string s, char delim){ // careful about call by value
+    s += delim;
+    int prev = 0, curr  = 0;
+    vector<string> arr;
+    while((curr = s.find(delim, prev)) != string::npos){
+        string subst = s.substr(prev, curr - prev);
+        arr.push_back(subst);
+        prev = curr + 1;
+    }
+    int n = arr.size();
+    for(int i = n - 2; i >= 0; i--) parse2(arr[i], arr[n - 1]);
+    cout << arr[n - 1] << endl;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    string s;
+    while(getline(cin, s)) parse(s, ' ');
     return 0;
 }
 

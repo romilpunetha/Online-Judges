@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 #define endl '\n'
-#define inf INT_MAX
+#define inf int_max
 #define pb push_back
 #define present(c,x) ((c).find(x) != (c).end())
 #define base 999983
@@ -16,9 +16,30 @@
 #define all(a) (a).begin(),(a).end()
 using namespace std;
 typedef long long ll;
+ll n, x;
+vector<ll> pre(1e5 + 10, 0);
+
+bool check(int size){
+    for(int i = size; i <= n; i++){
+        if(pre[i] - pre[i - size] > x) return 0;
+    }
+    return 1;
+}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n >> x;
+    for(int i = 1; i <= n; i++){
+        ll t; cin >> t;
+        pre[i] = pre[i - 1] + t;
+    }
+    int st = 1, en = n, mid, ans = 1;
+    while(st <= en){
+        mid = (st + en) >> 1;
+        if(check(mid)) ans = mid, st = mid + 1;
+        else en = mid - 1;
+    }
+    cout << ans << endl;
     return 0;
 }
 

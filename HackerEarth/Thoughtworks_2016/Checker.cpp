@@ -16,9 +16,22 @@
 #define all(a) (a).begin(),(a).end()
 using namespace std;
 typedef long long ll;
-
+int n;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n;
+    vector<vector<string>>arr(n, vector<string>(4));
+    for(auto &it : arr){
+        for(auto &jt : it) cin >> jt;
+    }
+    vector<pair<int, int>>res;
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < n; j++){
+            if(arr[i][0] == arr[j][0] || arr[i][1] == arr[j][1] || arr[i][2] == arr[j][2] || arr[i][3] == arr[j][3]) res.push_back({i + 1, j + 1});
+        }
+    }
+    cout << res.size() << endl;
+    for(auto &it : res) cout << it.ff << " " << it.ss << endl;
     return 0;
 }
 
