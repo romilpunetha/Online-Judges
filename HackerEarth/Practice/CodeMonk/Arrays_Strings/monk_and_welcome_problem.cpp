@@ -20,15 +20,10 @@ typedef long long ll;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
-    }
-    cout << ans << endl;
+    vector<ll> a(n), b(n);
+    for(auto &it : a) cin >> it;
+    for(auto &it : b) cin >> it;
+    for(auto i = 0; i < n; i++) cout << a[i] + b[i] <<" ";
     return 0;
 }
 

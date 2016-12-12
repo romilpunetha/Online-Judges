@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 #define endl '\n'
-#define inf INT_MAX
+#define inf int_max
 #define pb push_back
 #define present(c,x) ((c).find(x) != (c).end())
 #define base 999983
@@ -20,15 +20,25 @@ typedef long long ll;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+    vector<queue<int> > arr(5);
+    vector<int> cnt(5, 0);
+    queue<int> rank;
+    set<int> st;
+    while(n--){
+        char c; cin >> c;
+        if(c == 'E'){
+            int x, y; cin >> x >> y;
+            cnt[x]++;
+            arr[x].push(y);
+            if(!present(st, x)) rank.push(x), st.insert(x);
+        }
+        else{
+            cout << rank.front() << " " << arr[rank.front()].front() << endl;
+            arr[rank.front()].pop();
+            cnt[rank.front()]--;
+            if(!cnt[rank.front()]) st.erase(rank.front()), rank.pop();
+        }
     }
-    cout << ans << endl;
     return 0;
 }
 

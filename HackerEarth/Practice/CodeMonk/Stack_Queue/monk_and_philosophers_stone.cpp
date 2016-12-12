@@ -20,15 +20,20 @@ typedef long long ll;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+    vector<int> arr(n);
+    for(auto &it : arr) cin >> it;
+    int q, x, i = 0, sum = 0; cin >> q >> x;
+    stack<int>st;
+    bool flag = 0;
+    while(q--){
+        string s; cin >> s;
+        if(s == "Harry") st.push(arr[i]), sum += arr[i], i++;
+        else sum -= st.top(), st.pop();
+        if(sum == x) flag = 1;
+        if(flag) break;
     }
-    cout << ans << endl;
+    if(!flag) cout << -1 << endl;
+    else cout << st.size() << endl;
     return 0;
 }
 

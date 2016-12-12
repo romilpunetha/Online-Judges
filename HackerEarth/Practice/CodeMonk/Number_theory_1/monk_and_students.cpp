@@ -20,15 +20,19 @@ typedef long long ll;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
+    map<int, int> mp;
     for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+        ll p, q, r, s, div; cin >> p >> q >> r >> s;
+        if( r != p && s != q ) div = __gcd(abs(r - p), abs(s - q));
+        else div = 1;
+        if(!present(mp, div + 1)) mp[div + 1] = i + 1;
     }
-    cout << ans << endl;
+    int q; cin >> q; while(q--){
+        int t; cin >> t;
+        auto it = mp.lower_bound(t);
+        if(it == mp.end()) cout << -1 << endl;
+        else cout << it->ss << endl;
+    }
     return 0;
 }
 

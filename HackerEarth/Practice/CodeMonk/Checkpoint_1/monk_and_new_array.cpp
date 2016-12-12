@@ -19,16 +19,23 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+    int n, m;
+    cin >> n >> m;
+    vector<vector<ll>> arr(n, vector<ll>(m, 0));
+    for(auto &it : arr){
+        for(auto &jt : it) cin >> jt;
+        sort(it.begin(), it.end());
     }
-    cout << ans << endl;
+    ll diff = inf;
+    for(int i = 1; i < n; i++){
+        int j = 0, k = 0;
+        while(j < m && k < m){
+            diff = min(diff, abs(arr[i - 1][j] - arr[i][k]));
+            if(arr[i -1][j] < arr[i][k]) j++;
+            else k++;
+        }
+    }
+    cout << diff <<endl;
     return 0;
 }
 

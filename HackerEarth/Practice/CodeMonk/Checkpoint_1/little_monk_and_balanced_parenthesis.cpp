@@ -20,13 +20,23 @@ typedef long long ll;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
+    stack<pair<int,int>>st;
+    vector<int>arr(n, 0);
+    int ans = 0;
     for(int i = 0; i < n; i++){
         int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+        if(t > 0) st.push({t, i});
+        else{
+            if(!st.empty() && st.top().ff == -t){
+                arr[i] = i - st.top().ss + 1 + arr[max(0, st.top().ss - 1)];
+                ans = max(arr[i], ans);
+                st.pop();
+            }
+            else{
+                while(!st.empty()) st.pop();
+                arr[i] = 0;
+            }
+        }
     }
     cout << ans << endl;
     return 0;

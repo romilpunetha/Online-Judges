@@ -17,18 +17,51 @@
 using namespace std;
 typedef long long ll;
 
+vector<stack<int> > arr;
+vector<multiset<int> >mp;
+int n;
+
+bool check(){
+    int prev = *( mp[1].begin() );
+    for(int i = 2; i <= n; i++){
+        auto it = mp[i].upper_bound(prev);
+        if(it == mp[i].end()) return 0;
+        prev = *it;
+    }
+    return 1;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+    cin >> n;
+    arr.resize(n + 2);
+    mp.resize(n + 2);
+    for(int i = 1; i <= n; i++){
+        int size; cin >> size;
+        while(size--){
+            int t; cin >> t;
+            arr[i].push(t);
+            mp[i].insert(t);
+        }
     }
-    cout << ans << endl;
+    int q; cin >> q; while(q--){
+        int choice; cin >> choice;
+        if(choice == 0){
+            int k; cin >> k;
+            int t = arr[k].top();
+            arr[k].pop();
+            mp[k].erase(mp[k].find(t));
+        }
+        else if(choice == 1){
+            int k, h; cin >> k >> h;
+            arr[k].push(h);
+            mp[k].insert(h);
+        }
+        else{
+            if( check() ) cout << "YES\n";
+            else cout << "NO\n";
+        }
+    }
     return 0;
 }
 

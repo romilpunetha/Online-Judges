@@ -20,15 +20,25 @@ typedef long long ll;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+    vector<ll>arr(n + 2 , 0), pre(n + 2, 0), suf(n + 2, 0);
+    for(int i = 1; i <= n; i++){
+        cin >> arr[i];
     }
-    cout << ans << endl;
+    stack<int> st;
+    for(int i = 1; i <= n; i++){
+        while( !st.empty() && arr[st.top()] <= arr[i] ) st.pop();
+        if(st.empty()) pre[i] = -1;
+        else pre[i] = st.top();
+        st.push(i);
+    }
+    while( !st.empty() ) st.pop();
+    for(int i = n; i >= 1; i--){
+        while( !st.empty() && arr[st.top()] <= arr[i] ) st.pop();
+        if(st.empty()) suf[i] = -1;
+        else suf[i] = st.top();
+        st.push(i);
+    }
+    for(int i = 1; i <= n; i++) cout << pre[i] + suf[i] << " ";
     return 0;
 }
 

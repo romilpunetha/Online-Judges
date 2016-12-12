@@ -16,19 +16,34 @@
 #define all(a) (a).begin(),(a).end()
 using namespace std;
 typedef long long ll;
+typedef double dd;
+
+ll g, x, y;
+void extendedEuclid(ll A,ll B) {
+    if(B == 0) {
+        g = A;
+        x = 1;
+        y = 0;
+    }
+    else {
+        extendedEuclid(B, A%B);
+        ll temp = x;
+        x = y;
+        y = temp - (A/B)*y;
+    }
+}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+    int test; cin >> test; while(test--){
+        ll a, b, d; cin >> a >> b >> d;
+        extendedEuclid(a, b);
+        if( d % g ){ cout << 0 << endl; continue; }
+        ll p = ceil( (dd)(-x) * (dd)d / (dd)b );
+        ll q = floor( (dd)y * (dd)d / (dd)a );
+        if( p <= q) cout << q - p + 1 << endl;
+        else cout << "0\n";
     }
-    cout << ans << endl;
     return 0;
 }
 

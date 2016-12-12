@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 #define endl '\n'
-#define inf INT_MAX
+#define inf int_max
 #define pb push_back
 #define present(c,x) ((c).find(x) != (c).end())
 #define base 999983
@@ -19,16 +19,14 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
-    }
-    cout << ans << endl;
+    int test; cin >> test; while(test--){
+        ll n, m; cin >> n >> m;
+            ll i = 0;
+            bool flag = 0;
+            for(; i <= 1e6; i++) if(i * i % m == n) {flag = 1; break;}
+            if(flag) cout << i << endl;
+            else cout << -1 << endl;
+        }
     return 0;
 }
 

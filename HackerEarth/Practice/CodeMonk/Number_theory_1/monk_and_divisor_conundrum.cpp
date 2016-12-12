@@ -20,15 +20,20 @@ typedef long long ll;
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
+    vector<int> arr(1e6 + 11, 0), res( 1e6 + 11, 0);
     for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+        int t; cin >> t; arr[t]++;
     }
-    cout << ans << endl;
+    for(ll i = 1; i < 1e6 + 10; i++){
+        for(ll j = 1; i * j < 1e6 + 10; j++){
+            res[i] += arr[i * j];
+        }
+    }
+    int q; cin >> q; while(q--){
+        ll r, s; cin >> r >> s;
+        if(__gcd(r, s) == 1) cout << res[r] + res[s] - res[min((ll)1e6 + 10, r * s)]<< endl;
+        else cout << res[min(r, s)] << endl;
+    }
     return 0;
 }
 

@@ -16,19 +16,50 @@
 #define all(a) (a).begin(),(a).end()
 using namespace std;
 typedef long long ll;
+int n, m;
+
+ll v1, v2, v3, v4;
+
+ll util_row(vector<vector<ll>> &arr, ll val){
+    ll sum = 0;
+    for(int i = 0; i < n; i++){
+        ll sum1 = 0, sum2 = 0;
+        for(int j = 0; j < m; j++){
+            sum1 += abs(arr[i][j]);
+            sum2 += abs(arr[i][j] + val);
+        }
+        sum += max(max(sum1, sum2), m * v2) ;
+    }
+    return sum;
+}
+
+ll util_col(vector<vector<ll>> &arr, ll val){
+    ll sum = 0;
+    for(int i = 0; i < m; i++){
+        ll sum1 = 0, sum2 = 0;
+        for(int j = 0; j < n; j++){
+            sum1 += abs(arr[j][i]);
+            sum2 += abs(arr[j][i] + val);
+        }
+        sum += max(max(sum1, sum2), n * v4);
+    }
+    return sum;
+}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
+    cin >> n >> m;
+    vector<vector<ll>>arr(n, vector<ll>(m, 0));
+    ll sum = 0;
     for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+        for(int j = 0; j < m; j++){
+            cin >> arr[i][j];
+            sum += arr[i][j];
+        }
     }
-    cout << ans << endl;
+    cin >> v1 >> v2 >> v3 >> v4;
+    ll res = max(util_row(arr, v1), util_col(arr, v3));
+    cout << res << endl;
     return 0;
 }
 

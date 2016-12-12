@@ -19,16 +19,15 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+    int test; cin >> test; while(test--){
+        int n, k; cin >> n >> k;
+        vector<int>arr(n);
+        for(auto &it : arr) cin >> it;
+        k %= n;
+        if(k == 0) k = n;
+        rotate(arr.begin(), arr.begin() + n - k, arr.end());
+        for(auto &it : arr) cout << it << " "; cout << endl;
     }
-    cout << ans << endl;
     return 0;
 }
 

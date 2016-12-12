@@ -17,18 +17,28 @@
 using namespace std;
 typedef long long ll;
 
+string s;
+
+int check(){
+    int i = 0, j = s.length() - 1;
+    while(i < j){
+        if(s[i] != s[j]) return 0;
+        i++, j--;
+    }
+    if(i == j) return 1;
+    else return 2;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
     int n; cin >> n;
-    int prev = INT_MIN;
-    int ans = 0, cnt = 0;
-    for(int i = 0; i < n; i++){
-        int t; cin >> t;
-        if(t >= prev) cnt++, ans = max(ans, cnt);
-        else cnt = 1;
-        prev = t;
+    while(n--){
+        cin >> s;
+        int t = check();
+        if( t == 1 ) cout << "YES ODD\n";
+        else if( t == 2 ) cout << "YES EVEN\n";
+        else cout << "NO\n";
     }
-    cout << ans << endl;
     return 0;
 }
 
