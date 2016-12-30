@@ -14,29 +14,29 @@ typedef long long ll;
 
 int mod = 1e9 + 7;
 struct matrix{
-    ll n, m;
+    ll rows, cols;
     vector<vector<ll> > mat;
     matrix(){
         ;
     }
 
     matrix(int x, int y = 0, int iden = 0){
-        n = x; m = y;
-        if(y==0) m = n;
-        mat = vector<vector<ll> >(n, vector<ll>(m, 0));
-        if(iden) for(int i = 0; i < n; i++) mat[i][i] = 1;
+        rows = x; cols = y;
+        if(y == 0) cols = rows;
+        mat = vector<vector<ll> >(rows, vector<ll>(cols, 0));
+        if(iden) for(int i = 0; i < rows; i++) mat[i][i] = 1;
     }
 
     void out(){
-        for(int i = 0; i < n; i++)
-            for(int j = 0; j < m; j++)
+        for(int i = 0; i < rows; i++)
+            for(int j = 0; j < cols; j++)
                 cout<<mat[i][j]<<" ";
         cout<<endl;
     }
 
     ll rowsum(int x){
         ll ans = 0;
-        for(int i = 0; i < m; i++){
+        for(int i = 0; i < cols; i++){
             ans += mat[x][i];
             if (ans>=mod) ans -= mod;
         }
@@ -45,7 +45,7 @@ struct matrix{
 
     ll colsum(int x){
         ll ans = 0;
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i < rows; i++){
             ans += mat[i][x];
             if (ans>=mod) ans -= mod;
         }
@@ -54,7 +54,7 @@ struct matrix{
 };
 
 matrix operator *(const matrix &a,const matrix &b){
-    int p = a.n, q = a.m, r = b.m;
+    int p = a.rows, q = a.cols, r = b.cols;
     matrix c = matrix(p, r);
     for(int i = 0; i < p; i++){
         for(int j = 0; j < r; j++){
@@ -69,8 +69,8 @@ matrix operator *(const matrix &a,const matrix &b){
     return c;
 }
 matrix operator *(ll a,const matrix &b){
-    matrix c = matrix(b.n, b.m);
-    int p = b.n, q = b.m;
+    matrix c = matrix(b.rows, b.cols);
+    int p = b.rows, q = b.cols;
     for(int i = 0; i < p; i++){
         for(int j = 0; j < q; j++){
             ll &val = c.mat[i][j];
@@ -82,7 +82,7 @@ matrix operator *(ll a,const matrix &b){
 }
 
 matrix operator +(const matrix &a,const matrix &b){
-    int p = a.n, q = a.m;
+    int p = a.rows, q = a.cols;
     matrix c = matrix(p, q);
     for(int i = 0; i < p; i++){
         for(int j = 0; j < q; j++){
@@ -95,7 +95,7 @@ matrix operator +(const matrix &a,const matrix &b){
 }
 
 matrix operator -(const matrix &a,const matrix &b){
-    int p = a.n, q = a.m;
+    int p = a.rows, q = a.cols;
     matrix c = matrix(p, q);
     for(int i = 0; i < p; i++){
         for(int j = 0; j < q; j++){
@@ -109,15 +109,15 @@ matrix operator -(const matrix &a,const matrix &b){
 }
 
 matrix operator %(const matrix &M, int MOD){
-    matrix temp(M.n, M.m);
-    for(int i = 0; i < M.n; i++)
-        for(int j = 0; j< M.m; j++)
+    matrix temp(M.rows, M.cols);
+    for(int i = 0; i < M.rows; i++)
+        for(int j = 0; j< M.cols; j++)
             temp.mat[i][j] = M.mat[i][j] % MOD;
     return temp;
 }
 
 matrix expo(matrix a,ll b){
-    matrix res = matrix(a.n);
+    matrix res = matrix(a.rows, a.rows, 1);
     while(b){
         if(b & 1) res = res * a;
         a = a * a;
