@@ -18,64 +18,25 @@
 using namespace std;
 typedef long long ll;
 
-ll n, m, k, mx = 0, ans = 0;
-
-typedef struct Dsu{
-    vector<ll>sizes, parent, gov, visited;
-    Dsu(int n){
-        parent.resize(n + 1);
-        sizes.resize(n + 1, 1);
-        gov.resize(n + 1, 0);
-        visited.resize(n + 1, 0);
-    }
-
-    int find(int x){
-        while(x != parent[x]) x = parent[x];
-        return x;
-    }
-
-    void merge(int x, int y){
-        int p = find(x);
-        int q = find(y);
-        if(p != q){
-            parent[p] = q;
-            sizes[q] += sizes[p];
-        }
-    }
-
-}Dsu;
-
+vector<pair<int, int> > *g;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin >> n >> m >> k;
-    Dsu d(n);
-    for(int i = 1; i <= n; i++) d.parent[i] = i;
-    for(int i = 0; i < k; i++){
-        int t; cin >> t; d.gov[t] = 1;
-    }
+    int n, m, k;
+    cin >> n >> m >> k; k--;
+    g = new vector<pair<int, int> >[n];
+    vector<int> arr(n);
+    for(auto &it : arr) cin >> it;
     for(int i = 0; i < m; i++){
-        int u, v; cin >> u >> v;
-        d.merge(u, v);
+        int u, v; cin >> u >> v; u--, v--;
+        g[u].push_back({arr[v], v});
+        g[v].push_back({arr[u], u});
     }
-    for(int i = 0; i <= n; i++) if(d.gov[i]) d.gov[d.find(i)] = 1;
-    for(int i = 1; i <= n; i++){
-        int t = d.find(i);
-        if(d.gov[t] && !d.visited[t]){
-            mx = max(mx, d.sizes[t]);
-            ans += (d.sizes[t] * (d.sizes[t] - 1) / 2);
-            d.visited[t] = 1;
-        }
+    for(int i = 0; i < n; i++){
+        sort(all(g[i]), greater<pair<int, int>>());
+        g[i].push_back({0, -2});
+        cout << (g[i][min((int)g[i].size() - 1, k)]).ss + 1 << endl;
     }
-    for(int i = 1; i <= n; i++){
-        int t = d.find(i);
-        if(!d.gov[t]){
-            ans += mx;
-            mx++;
-        }
-    }
-    ans -= m;
-    cout << ans << endl;
     return 0;
 }
 

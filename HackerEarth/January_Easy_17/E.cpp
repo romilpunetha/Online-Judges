@@ -18,64 +18,50 @@
 using namespace std;
 typedef long long ll;
 
-ll n, m, k, mx = 0, ans = 0;
-
-typedef struct Dsu{
-    vector<ll>sizes, parent, gov, visited;
-    Dsu(int n){
-        parent.resize(n + 1);
-        sizes.resize(n + 1, 1);
-        gov.resize(n + 1, 0);
-        visited.resize(n + 1, 0);
+bool util(vector<bool> &a, vector<bool> &b){
+    ll ans = 0;
+    for(int i = 1; i <= 9; i++){
+        if(a[i] && b[i]) ans = ans * 10 + i;
     }
-
-    int find(int x){
-        while(x != parent[x]) x = parent[x];
-        return x;
-    }
-
-    void merge(int x, int y){
-        int p = find(x);
-        int q = find(y);
-        if(p != q){
-            parent[p] = q;
-            sizes[q] += sizes[p];
-        }
-    }
-
-}Dsu;
-
+    if(ans & 1) return false;
+    return true;
+}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin >> n >> m >> k;
-    Dsu d(n);
-    for(int i = 1; i <= n; i++) d.parent[i] = i;
-    for(int i = 0; i < k; i++){
-        int t; cin >> t; d.gov[t] = 1;
-    }
-    for(int i = 0; i < m; i++){
-        int u, v; cin >> u >> v;
-        d.merge(u, v);
-    }
-    for(int i = 0; i <= n; i++) if(d.gov[i]) d.gov[d.find(i)] = 1;
-    for(int i = 1; i <= n; i++){
-        int t = d.find(i);
-        if(d.gov[t] && !d.visited[t]){
-            mx = max(mx, d.sizes[t]);
-            ans += (d.sizes[t] * (d.sizes[t] - 1) / 2);
-            d.visited[t] = 1;
+    int test; cin >> test; while(test--){
+        int n1, n2; cin >> n1 >> n2;
+        string s;
+        vector<vector<bool> > arr(n1, vector<bool>(10, 0)), brr(n2, vector<bool>(10, 0));
+        for(auto &it : arr){
+            cin >> s;
+            int cnt = 0;
+            for(auto &jt : s){
+                jt -= 48;
+                if(!it[jt]) it[jt] = 1, cnt++;
+                if(cnt == 9) break;
+            }
         }
-    }
-    for(int i = 1; i <= n; i++){
-        int t = d.find(i);
-        if(!d.gov[t]){
-            ans += mx;
-            mx++;
+        for(auto &it : brr){
+            cin >> s;
+            int cnt = 0;
+            for(auto &jt : s){
+                jt -= 48;
+                if(!it[jt]) it[jt] = 1, cnt++;
+                if(cnt == 9) break;
+            }
         }
+        double ans = 0.0;
+        for(auto &it : arr){
+            for(auto &jt : brr){
+                ans += util(it, jt);
+            }
+        }
+        ans = (ans * 1000) / (double)(n1 * n2);
+        ans = round(ans);
+        ans /= 1000;
+        cout << fixed << setprecision(3) << ans << endl;
     }
-    ans -= m;
-    cout << ans << endl;
     return 0;
 }
 

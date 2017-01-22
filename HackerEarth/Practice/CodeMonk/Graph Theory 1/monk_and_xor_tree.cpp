@@ -17,64 +17,43 @@
 #define all(a) (a).begin(),(a).end()
 using namespace std;
 typedef long long ll;
+ll ans = 0, n , k;
 
-ll n, m, k, mx = 0, ans = 0;
+unordered_map<ll, ll> mp;
 
-typedef struct Dsu{
-    vector<ll>sizes, parent, gov, visited;
-    Dsu(int n){
-        parent.resize(n + 1);
-        sizes.resize(n + 1, 1);
-        gov.resize(n + 1, 0);
-        visited.resize(n + 1, 0);
+typedef struct node{
+    list<node *> child;
+    ll val = 0;
+    node(ll x){
+        val = x;
     }
+}node;
 
-    int find(int x){
-        while(x != parent[x]) x = parent[x];
-        return x;
+void dfs(node *root, int cnt, int val){
+    int t = val ^ root -> val;
+    ans += mp[t ^ k];
+    mp[t]++;
+    for(auto &it : root -> child){
+        dfs(it, cnt, (val ^ root ->val));
     }
-
-    void merge(int x, int y){
-        int p = find(x);
-        int q = find(y);
-        if(p != q){
-            parent[p] = q;
-            sizes[q] += sizes[p];
-        }
-    }
-
-}Dsu;
-
+    mp[t]--;
+}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin >> n >> m >> k;
-    Dsu d(n);
-    for(int i = 1; i <= n; i++) d.parent[i] = i;
-    for(int i = 0; i < k; i++){
-        int t; cin >> t; d.gov[t] = 1;
+    mp[0] = 1;
+    cin >> n >> k;
+    vector<ll> parent(n);
+    vector<node *>ns(n, NULL);
+    for(int i = 0; i < n; i++){
+        int t; cin >> t;
+        ns[i] = new node(t);
     }
-    for(int i = 0; i < m; i++){
-        int u, v; cin >> u >> v;
-        d.merge(u, v);
+    for(auto &it : parent){ cin >> it; it--;}
+    for(int i = 0; i < n - 1; i++){
+        (ns[parent[i]] -> child).pb(ns[i + 1]);
     }
-    for(int i = 0; i <= n; i++) if(d.gov[i]) d.gov[d.find(i)] = 1;
-    for(int i = 1; i <= n; i++){
-        int t = d.find(i);
-        if(d.gov[t] && !d.visited[t]){
-            mx = max(mx, d.sizes[t]);
-            ans += (d.sizes[t] * (d.sizes[t] - 1) / 2);
-            d.visited[t] = 1;
-        }
-    }
-    for(int i = 1; i <= n; i++){
-        int t = d.find(i);
-        if(!d.gov[t]){
-            ans += mx;
-            mx++;
-        }
-    }
-    ans -= m;
+    dfs(ns[0], 0, 0);
     cout << ans << endl;
     return 0;
 }

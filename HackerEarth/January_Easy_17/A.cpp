@@ -18,64 +18,56 @@
 using namespace std;
 typedef long long ll;
 
-ll n, m, k, mx = 0, ans = 0;
+vector<int> bit(1e6, 0);
 
-typedef struct Dsu{
-    vector<ll>sizes, parent, gov, visited;
-    Dsu(int n){
-        parent.resize(n + 1);
-        sizes.resize(n + 1, 1);
-        gov.resize(n + 1, 0);
-        visited.resize(n + 1, 0);
+void update(int i, int val){
+    while(i < 1e6){
+        bit[i] += val;
+        i += i & -i;
     }
+}
 
-    int find(int x){
-        while(x != parent[x]) x = parent[x];
-        return x;
+int query(int i){
+    int sum = 0;
+    while(i){
+        sum += bit[i];
+        i -= i & -i;
     }
-
-    void merge(int x, int y){
-        int p = find(x);
-        int q = find(y);
-        if(p != q){
-            parent[p] = q;
-            sizes[q] += sizes[p];
-        }
-    }
-
-}Dsu;
-
+    return sum;
+}
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    cin >> n >> m >> k;
-    Dsu d(n);
-    for(int i = 1; i <= n; i++) d.parent[i] = i;
-    for(int i = 0; i < k; i++){
-        int t; cin >> t; d.gov[t] = 1;
-    }
-    for(int i = 0; i < m; i++){
-        int u, v; cin >> u >> v;
-        d.merge(u, v);
-    }
-    for(int i = 0; i <= n; i++) if(d.gov[i]) d.gov[d.find(i)] = 1;
-    for(int i = 1; i <= n; i++){
-        int t = d.find(i);
-        if(d.gov[t] && !d.visited[t]){
-            mx = max(mx, d.sizes[t]);
-            ans += (d.sizes[t] * (d.sizes[t] - 1) / 2);
-            d.visited[t] = 1;
+    int test; cin >> test; while(test--){
+        int n; cin >> n;
+        multiset<pair<int, int> >mp;
+        for(int i = 1; i <= n; i++){
+            int t; cin >> t; mp.insert({t, i});
+            update(i, 1);
+        }
+        int up = 0, dn = 0;
+        while(mp.size() > 1){
+            auto it = mp.begin();
+            int val = it->ff, ind = it->ss;
+            val -= up;
+            dn = query(ind);
+            int k = val / dn;
+            if(val == 0 || val % dn) k++;
+            up += k * dn;
+            while(!mp.empty() && (it->ff) - up < 0){
+                ind = it->ss;
+                update(ind, -1);
+                mp.erase(mp.begin());
+                it = mp.begin();
+            }
+        }
+        if(mp.empty()) cout << "Kushagra\n";
+        else{
+            int ind = (mp.begin())->ss;
+            update(ind, -1);
+            cout << "Ladia\n";
         }
     }
-    for(int i = 1; i <= n; i++){
-        int t = d.find(i);
-        if(!d.gov[t]){
-            ans += mx;
-            mx++;
-        }
-    }
-    ans -= m;
-    cout << ans << endl;
     return 0;
 }
 
