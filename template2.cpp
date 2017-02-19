@@ -10,10 +10,11 @@
 #define ss second
 #define mp make_pair
 #define V vector
+#define L list
 #define P pair
 #define M map
-#define UM unordered_map
 #define S set
+#define UM unordered_map
 #define US unordered_set
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
@@ -24,6 +25,9 @@
 #define all(a) (a).begin(),(a).end()
 using namespace std;
 typedef long long ll;
+typedef unsigned long long ull;
+typedef double dbl;
+typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
