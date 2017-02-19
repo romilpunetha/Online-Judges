@@ -3,18 +3,11 @@
 #define inf INT_MAX
 #define pb push_back
 #define present(c,x) ((c).find(x) != (c).end())
-#define present(c,x, y) ((c).find({x, y}) != (c).end())
+#define mod 1000000007
 #define base 999983
 #define baseinv 943912055
 #define ff first
 #define ss second
-#define mp make_pair
-#define V vector
-#define P pair
-#define M map
-#define UM unordered_map
-#define S set
-#define US unordered_set
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
 #define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
@@ -27,6 +20,15 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n, q, k; cin >> n;
+    vector<int> arr(n);
+    for( auto &it : arr ) cin >> it;
+    sort(all(arr));
+    cin >> q; while(q--){
+        char c; cin >> k >> c; k--;
+        if(c == 'L') k = n - k - 1;
+        cout << arr[k] << endl;
+    }
     return 0;
 }
 
