@@ -1,0 +1,49 @@
+set so=7
+:nmap <F3> :!g++ % -Wall -g -std=c++1y -fpermissive && a.exe <%.in <CR>
+:imap <F3> <esc><esc>:!g++ %  -Wall -g -std=c++1y -fpermissive && a.exe <%.in <CR><esc>
+:nmap <F6> :!g++ % -Wall -g -std=c++1y -fpermissive && a.exe >output.txt <CR><esc>
+:imap <F6> <esc><esc>:!g++ % -Wall -g -std=c++1y -fpermissive && a.exe >output.txt<CR>
+:nmap <F7> :r! sed -ne 'p' <~/Programs/output.txt<CR>
+:imap <F7> <esc><esc>:r! sed -ne 'p' <~/Programs/output.txt<CR>
+:nmap <F2> <esc><esc><esc>magg=G`a:w!<CR>
+:imap <F2> <esc><esc><esc>magg=G`a:w!<CR>i
+:nmap <F4> :wqa!<CR>
+:imap <F4> <esc>:wqa!<CR>
+autocmd BufNewFile *.cpp r e:/Programs/OJs/template2.cpp
+syntax on
+filetype on
+set number                      " Line numbers on
+set nocompatible        " Must be first line
+set nobackup
+set noswapfile
+set noerrorbells
+set novisualbell
+set t_vb=
+set nowrap            " Do not wrap long lines
+set smartindent
+set cindent
+set autoindent                  " Indent at the same level of the previous line
+set shiftwidth=4                " Use indents of 4 spaces
+set expandtab                   " Tabs are spaces, not tabs
+set tabstop=4                   " An indentation every four columns
+set softtabstop=4               " Let backspace delete indent
+set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
+set splitright                  " Puts new vsplit windows to the right of the current
+set splitbelow                  " Puts new split windows to the bottom of the current
+set noeb vb t_vb=
+set mouse=a
+set t_vb=
+colorscheme google
+syntax enable
+filetype plugin indent on
+set tm=500
+set foldmethod=marker
+set foldenable
+set guioptions-=m
+set guioptions-=T
+set guioptions-=r
+set guifont=Consolas:h16:cANSI
+map <F10> <Esc>:set guifont=*<CR>
+:set guioptions-=r  "remove right-hand scroll bar
+:set guioptions-=L  "remove left-hand scroll bar
+let g:syntastic_cpp_compiler_options = ' -std=c++14'
