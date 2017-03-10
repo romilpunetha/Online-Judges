@@ -18,7 +18,6 @@
 #define MS multiset
 #define US unordered_set
 #define UMS unordered_multiset
-#define PQ priority_queue
 #define Graph list<int>*
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
@@ -35,6 +34,11 @@ typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int arr[5];
+    for(int i = 0; i < 5; i++){
+        cin >> arr[i];
+        printf("%d \t", i[arr]);
+    }
     return 0;
 }
 

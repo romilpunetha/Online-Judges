@@ -5,6 +5,7 @@
 #define der(c, x) ((c).find(x) != (c).end())
 #define base 999983
 #define baseinv 943912055
+#define mod 1000000007
 #define ff first
 #define ss second
 #define V vector
@@ -35,6 +36,42 @@ typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n, el = 0, ol = 0; cin >> n;
+    V<ll> elc(n + 2, 0), erc, olc, orc, arr;
+    erc = olc = orc = arr =  elc;
+    for(int i = 1; i <= n; i++){
+        int t; cin >> t; arr[i] = t;
+        if(t & 1){
+            olc[i] = olc[i - 1] + ol + 1;
+            ol++;
+            el = 0;
+        }
+        else{
+            elc[i] = elc[i - 1] + el + 1;
+            el++;
+            ol = 0;
+        }
+    }
+    el = ol = 0;
+    for(int i = n; i >= 1; i--){
+        int t; t = arr[i];
+        if(t & 1){
+            orc[i] = orc[i + 1] + ol + 1;
+            ol++;
+            el = 0;
+        }
+        else{
+            erc[i] = erc[i + 1] + el + 1;
+            el++;
+            ol = 0;
+        }
+    }
+    ll ans = 0;
+    for(int i = 1; i <= n; i++){
+        ans += elc[i] * erc[i + 1] + olc[i] * orc[i + 1];
+        ans %= mod;
+    }
+    cout << ans << endl;
     return 0;
 }
 

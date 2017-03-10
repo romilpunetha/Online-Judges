@@ -33,8 +33,39 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+bool C(const P<int, int>&a, const P<int, int> &b){
+    return a.ss < b.ss;
+}
+
+void merge_sort(V<P<int, int> >&arr, int st, int en){
+    if(st >= en) return;
+    int mid = (st + en) / 2;
+    merge_sort(arr, st, mid);
+    merge_sort(arr, mid + 1, en);
+    V<P<int, int> > brr(en - st + 1);
+    int k = 0, val = 0, i = st, j = mid + 1;
+    while(i <= mid && j <= en){
+        if(arr[i].ff + val >= arr[j].ff){
+            brr[k++] = arr[j++];
+            val++;
+        }
+        else{
+            brr[k++] = {arr[i].ff + val, arr[i].ss};
+            i++;
+        }
+    }
+    while(i <= mid) brr[k++] = {arr[i].ff + val, arr[i].ss}, i++;
+    while(j <= en) brr[k++] = arr[j++];
+    for(int i = 0; i <= en - st; i++) arr[st + i] = brr[i];
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n; cin >> n; V<P<int, int> >arr(n);
+    for(int i = 0; i < n; i++){ int t; cin >> t; arr[i] = {t, i}; }
+    merge_sort(arr, 0, n - 1);
+    sort(all(arr), C);
+    for( auto &it : arr ) cout << it.ff << " ";
     return 0;
 }
 

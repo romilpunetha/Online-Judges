@@ -33,8 +33,38 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+int n;
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n;
+    V<int> arr(n), brr;
+    for(auto &it : arr) cin >> it;
+    brr = arr;
+    for(auto &it : arr){
+        if(it == 0) it = 1;
+        else it = -1;
+    }
+    ll msf = INT_MIN, ed = 0, st = 0, med = 0, s = 0;
+    for(int i = 0; i < n; i++){
+        med += arr[i];
+        if(msf < med){
+            msf = med;
+            st = s;
+            ed = i;
+        }
+        if(med < 0){
+            med = 0;
+            s = i + 1;
+        }
+    }
+    ll ans = 0;
+    for(int i = st; i <= ed; i++){
+        if(brr[i] == 0) brr[i] = 1;
+        else brr[i] = 0;
+    }
+    for(auto &it : brr) ans += it;
+    cout << ans << endl;
     return 0;
 }
 
