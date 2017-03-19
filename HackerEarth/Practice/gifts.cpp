@@ -5,14 +5,13 @@
 #define der(c, x) ((c).find(x) != (c).end())
 #define base 999983
 #define baseinv 943912055
-#define mod 1000000007
 #define ff first
 #define ss second
 #define V vector
 #define L list
 #define P pair
-#define M map
-#define S set
+#define MP map
+#define ST set
 #define UM unordered_map
 #define MM multimap
 #define UMM unordered_multimap
@@ -34,30 +33,59 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+V<ll> bit(1e6 + 10, 0);
+
+void update(ll i, ll val){
+    while(i < 1e6){
+        bit[i] += val;
+        i += i & -i;
+    }
+}
+
+ll query(ll i){
+    ll sum = 0;
+    while(i){
+        sum += bit[i];
+        i -= i & -i;
+    }
+    return sum;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    ll n, sum = 0, even = 1, odd = 0; cin >> n;
-    V<ll> left(n + 2, 0), right, arr;
-    right = arr = left;
-    for(int i = 1; i <= n; i++){
-        cin >> arr[i];
-        sum += arr[i];
-        if(sum & 1) left[i] = odd++;
-        else  left[i] = even++;
+    int n, flag = 1; cin >> n;
+    V<V<ll> >arr(5, V<ll>(n));
+    V<ll> sum(5, 0);
+    for(auto &it : arr) for(auto &jt : it) cin >> jt;
+    for(int i = 0; s[i]; i++){
+        update(i + 1, arr[s[i] - 'A'][i]);
+        sum[s[i] - 'A'] += arr[s[i] - 'A'][i];
     }
-    even = 1, odd = 0, sum = 0;
-    for(int i = n; i >= 1; i--){
-        sum += arr[i];
-        if(sum & 1) right[i] = odd++;
-        else right[i] = even++;
+    string s; cin >> s;
+    int q; cin >> q; while(q--){
+        char Q, R; cin >> Q >> R;
+        if(R == 'e'){
+            char x, y; cin >> x >> y;
+            int p = x - 'A', q = y - 'A';
+            swap(arr[p], arr[q]);
+        }
+        else if(R == 'c'){
+            int x; char y; cin >> x >> y;
+            s[x - 1] = y;
+            flag = 1;
+        }
+        else{
+            if(flag){
+                for(int i = 0; s[i]; i++){
+                    ll val = query(i + 1);
+                    update(i + 1, -val);
+                }
+                flag = 0;
+            }
+            int x, y; cin >> x >> y;
+            cout << query(y) - query(x - 1) << endl;
+        }
     }
-    for(int i = n; i > 0; i--) right[i] += right[i + 1];
-    ll ans = 0;
-    for(int i = 1; i <= n; i++){
-        ans += left[i] * right[i + 1];
-        ans %= mod;
-    }
-    cout << ans << endl;
     return 0;
 }
 

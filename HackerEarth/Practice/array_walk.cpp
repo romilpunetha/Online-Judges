@@ -5,14 +5,13 @@
 #define der(c, x) ((c).find(x) != (c).end())
 #define base 999983
 #define baseinv 943912055
-#define mod 1000000007
 #define ff first
 #define ss second
 #define V vector
 #define L list
 #define P pair
-#define M map
-#define S set
+#define MP map
+#define ST set
 #define UM unordered_map
 #define MM multimap
 #define UMM unordered_multimap
@@ -34,30 +33,41 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+ll g, x, y;
+void extendedEuclid(ll A, ll B) {
+    if(B == 0) {
+        g = A;
+        x = 1;
+        y = 0;
+    }
+    else {
+        extendedEuclid(B, A % B);
+        ll temp = x;
+        x = y;
+        y = temp - (A / B) * y;
+    }
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    ll n, sum = 0, even = 1, odd = 0; cin >> n;
-    V<ll> left(n + 2, 0), right, arr;
-    right = arr = left;
-    for(int i = 1; i <= n; i++){
-        cin >> arr[i];
-        sum += arr[i];
-        if(sum & 1) left[i] = odd++;
-        else  left[i] = even++;
+    int test; cin >> test; while(test--){
+        ll h, u, d, res, gcd; cin >> h >> u >> d;
+        gcd = __gcd(u, d);
+        if(h % gcd != 0) res = -1;
+        else{
+            extendedEuclid(u, -d);
+            ll v = max(abs(x) / gcd, abs(y) / gcd) + 1;
+            x = x + v * d;
+            y = y + v * u;
+            ll t1 = x / d;
+            ll t2 = y / u;
+            ll mn = min(t1, t2);
+            x = x - mn * d;
+            y = y - mn * u;
+            res = x + y;
+        }
+        cout << res << endl;
     }
-    even = 1, odd = 0, sum = 0;
-    for(int i = n; i >= 1; i--){
-        sum += arr[i];
-        if(sum & 1) right[i] = odd++;
-        else right[i] = even++;
-    }
-    for(int i = n; i > 0; i--) right[i] += right[i + 1];
-    ll ans = 0;
-    for(int i = 1; i <= n; i++){
-        ans += left[i] * right[i + 1];
-        ans %= mod;
-    }
-    cout << ans << endl;
     return 0;
 }
 

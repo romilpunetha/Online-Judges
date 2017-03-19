@@ -5,14 +5,13 @@
 #define der(c, x) ((c).find(x) != (c).end())
 #define base 999983
 #define baseinv 943912055
-#define mod 1000000007
 #define ff first
 #define ss second
 #define V vector
 #define L list
 #define P pair
-#define M map
-#define S set
+#define MP map
+#define ST set
 #define UM unordered_map
 #define MM multimap
 #define UMM unordered_multimap
@@ -34,30 +33,30 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+int n;
+V<ll> arr(1e5), dp_cnt(1e5, 0), dp_sum(1e5, 0);
+
+ll ans_cnt = INT_MIN, ans_sum = INT_MIN;
+
+void solve(){
+    for(int i = 0; i < n; i++) dp_cnt[i] = 1, dp_sum[i] = abs(arr[i]);
+    for(int i = 1; i < n; i++){
+        for(int j = i - 1; j >= 0; j--){
+            if(arr[j] * arr[i] < 0 && abs(arr[i]) > abs(arr[j])){
+                if(dp_cnt[i] < dp_cnt[j] + 1) dp_cnt[i] = dp_cnt[j] + 1;
+                if(dp_sum[i] < dp_sum[j] + abs(arr[i])) dp_sum[i] = dp_sum[j] + abs(arr[i]);
+            }
+        }
+    }
+    for(int i = 0; i < n; i++) ans_cnt = max(ans_cnt, dp_cnt[i]), ans_sum = max(ans_sum, dp_sum[i]);
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    ll n, sum = 0, even = 1, odd = 0; cin >> n;
-    V<ll> left(n + 2, 0), right, arr;
-    right = arr = left;
-    for(int i = 1; i <= n; i++){
-        cin >> arr[i];
-        sum += arr[i];
-        if(sum & 1) left[i] = odd++;
-        else  left[i] = even++;
-    }
-    even = 1, odd = 0, sum = 0;
-    for(int i = n; i >= 1; i--){
-        sum += arr[i];
-        if(sum & 1) right[i] = odd++;
-        else right[i] = even++;
-    }
-    for(int i = n; i > 0; i--) right[i] += right[i + 1];
-    ll ans = 0;
-    for(int i = 1; i <= n; i++){
-        ans += left[i] * right[i + 1];
-        ans %= mod;
-    }
-    cout << ans << endl;
+    cin >> n;
+    for(int i = 0; i < n; i++) cin >> arr[i];
+    solve();
+    cout << ans_cnt << " " << ans_sum << endl;
     return 0;
 }
 

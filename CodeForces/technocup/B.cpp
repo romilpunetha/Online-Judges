@@ -5,14 +5,13 @@
 #define der(c, x) ((c).find(x) != (c).end())
 #define base 999983
 #define baseinv 943912055
-#define mod 1000000007
 #define ff first
 #define ss second
 #define V vector
 #define L list
 #define P pair
-#define M map
-#define S set
+#define MP map
+#define ST set
 #define UM unordered_map
 #define MM multimap
 #define UMM unordered_multimap
@@ -34,30 +33,36 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+int n;
+V<P<ll, ldbl> > arr;
+
+ldbl util(ldbl mid){
+    ldbl ans = 0.0;
+    for(auto &it : arr){
+        ldbl t = (abs(it.ff - mid) * 1.0) / it.ss;
+        ans = max(ans, t);
+    }
+    return ans;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    ll n, sum = 0, even = 1, odd = 0; cin >> n;
-    V<ll> left(n + 2, 0), right, arr;
-    right = arr = left;
-    for(int i = 1; i <= n; i++){
-        cin >> arr[i];
-        sum += arr[i];
-        if(sum & 1) left[i] = odd++;
-        else  left[i] = even++;
+    cin >> n;
+    arr.resize(n);
+    for(int i = 0; i < n; i++) cin >> arr[i].ff;
+    for(int i = 0; i < n; i++) cin >> arr[i].ss;
+    sort(all(arr));
+    ldbl l = arr[0].ff, r = arr[n - 1].ff;
+    while(ll(l * 1e7) < ll(r * 1e7)){
+        ldbl mid1 = l + (r - l) / 3.0, mid2 = r - (r - l) / 3.0, mid = (r + l) / 2.0;
+        ldbl ans = util(mid);
+        ldbl ans1 = util(mid1);
+        ldbl ans2 = util(mid2);
+        if(ans >= ans1 && ans <= ans2) r = mid;
+        else if(ans >= ans2 && ans <= ans1) l = mid;
+        else l = mid1, r = mid2;
     }
-    even = 1, odd = 0, sum = 0;
-    for(int i = n; i >= 1; i--){
-        sum += arr[i];
-        if(sum & 1) right[i] = odd++;
-        else right[i] = even++;
-    }
-    for(int i = n; i > 0; i--) right[i] += right[i + 1];
-    ll ans = 0;
-    for(int i = 1; i <= n; i++){
-        ans += left[i] * right[i + 1];
-        ans %= mod;
-    }
-    cout << ans << endl;
+    cout << fixed << setprecision(10) << util(l) << endl;
     return 0;
 }
 

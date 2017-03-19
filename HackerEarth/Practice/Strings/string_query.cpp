@@ -5,14 +5,13 @@
 #define der(c, x) ((c).find(x) != (c).end())
 #define base 999983
 #define baseinv 943912055
-#define mod 1000000007
 #define ff first
 #define ss second
 #define V vector
 #define L list
 #define P pair
-#define M map
-#define S set
+#define MP map
+#define ST set
 #define UM unordered_map
 #define MM multimap
 #define UMM unordered_multimap
@@ -34,30 +33,48 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+V<V<int> > bit(30, V<int>(1e6 + 10));
+V<bool> visited(1e6 + 10,0);
+
+void update(int i, int ind, int val){
+    while(ind <= 1e6){
+        bit[i][ind] += val;
+        ind += ind & -ind;
+    }
+}
+
+int query(int i, int ind){
+    int sum = 0;
+    while(ind){
+        sum += bit[i][ind];
+        ind -= ind & -ind;
+    }
+    return sum;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    ll n, sum = 0, even = 1, odd = 0; cin >> n;
-    V<ll> left(n + 2, 0), right, arr;
-    right = arr = left;
-    for(int i = 1; i <= n; i++){
-        cin >> arr[i];
-        sum += arr[i];
-        if(sum & 1) left[i] = odd++;
-        else  left[i] = even++;
+    string s; cin >> s;
+    int len = s.length();
+    for(int i = 0; i < len; i++) update(s[i] - 'a', i + 1, 1);
+    int q; cin >> q; while(q--){
+        int k; char l; cin >> k >> l;
+        int st = 1, en = len, mid, ans = -1;
+        while(st <= en){
+            mid = (st + en) >> 1;
+            int t = query(l - 'a', mid);
+            if(k <= t)  en = mid - 1, ans = mid;
+            else st = mid + 1;
+        }
+        if(ans != -1){
+            update(l - 'a', ans, -1);
+            visited[ans - 1] = 1;
+        }
     }
-    even = 1, odd = 0, sum = 0;
-    for(int i = n; i >= 1; i--){
-        sum += arr[i];
-        if(sum & 1) right[i] = odd++;
-        else right[i] = even++;
+    for(int i = 0; i < len; i++){
+        if(!visited[i]) cout << s[i];
     }
-    for(int i = n; i > 0; i--) right[i] += right[i + 1];
-    ll ans = 0;
-    for(int i = 1; i <= n; i++){
-        ans += left[i] * right[i + 1];
-        ans %= mod;
-    }
-    cout << ans << endl;
+    cout << endl;
     return 0;
 }
 

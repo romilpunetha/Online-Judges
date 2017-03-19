@@ -5,14 +5,13 @@
 #define der(c, x) ((c).find(x) != (c).end())
 #define base 999983
 #define baseinv 943912055
-#define mod 1000000007
 #define ff first
 #define ss second
 #define V vector
 #define L list
 #define P pair
-#define M map
-#define S set
+#define MP map
+#define ST set
 #define UM unordered_map
 #define MM multimap
 #define UMM unordered_multimap
@@ -34,30 +33,53 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+ll maxn = 1e5, ln = 20;
+vector<vector<int> > pa(ln, vector<int>(maxn, -1));
+
+typedef struct node{
+    vector<node *> child;
+    int level;
+    int id;
+    node(){}
+    node(int x){
+        int id = x;
+    }
+};
+
+void dfs(node* root, int parent, int depth){
+    root -> level = depth;
+    pa[0][root -> id] = parent;
+    for(auto &it : root -> child){
+        dfs(it, root -> id, depth + 1);
+    }
+}
+
+ll lca(ll u, ll v){
+    if(tree[u] -> level < tree[v]-> level) swap(u, v);
+    for(int i = ln - 1; i >= 0; i--){
+        if(tree[u] -> level - (1 << i) >= tree[v] -> level){
+            u = pa[i][u];
+        }
+    }
+    for(int i = ln - 1; i >= 0; i--){
+        if(pa[i][u] != -1 && pa[i][u] != pa[i][v]){
+            u = pa[i][u];
+            v = pa[i][v];
+        }
+    }
+    return pa[0][u];
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    ll n, sum = 0, even = 1, odd = 0; cin >> n;
-    V<ll> left(n + 2, 0), right, arr;
-    right = arr = left;
-    for(int i = 1; i <= n; i++){
-        cin >> arr[i];
-        sum += arr[i];
-        if(sum & 1) left[i] = odd++;
-        else  left[i] = even++;
+    for(int i = 1; i < ln; i++){
+        for(int j = 0; j < n; j++){
+            if(pa[i - 1][j] != -1){
+                pa[i][j] = pa[i - 1][pa[i - 1][j]];
+            }
+        }
     }
-    even = 1, odd = 0, sum = 0;
-    for(int i = n; i >= 1; i--){
-        sum += arr[i];
-        if(sum & 1) right[i] = odd++;
-        else right[i] = even++;
-    }
-    for(int i = n; i > 0; i--) right[i] += right[i + 1];
-    ll ans = 0;
-    for(int i = 1; i <= n; i++){
-        ans += left[i] * right[i + 1];
-        ans %= mod;
-    }
-    cout << ans << endl;
+
     return 0;
 }
 

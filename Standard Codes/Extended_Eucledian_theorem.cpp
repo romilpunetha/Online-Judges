@@ -6,10 +6,10 @@ void extendedEuclid(ll A,ll B) {
         y = 0;
     }
     else {
-        extendedEuclid(B, A%B);
+        extendedEuclid(B, A % B);
         ll temp = x;
         x = y;
-        y = temp - (A/B)*y;
+        y = temp - (A / B) * y;
     }
 }
 

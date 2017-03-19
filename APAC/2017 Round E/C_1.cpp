@@ -1,4 +1,3 @@
-
 #include<bits/stdc++.h>
 #define tr1(x)                cerr << #x << ":\t" << x << endl
 #define tr2(x, y)             cerr << #x << ":\t" << x << "\t|\t" << #y << ":\t" << y << endl
@@ -35,7 +34,6 @@ int main()
                 while(st <= en)
                 {
                     md = (st + (en - st)/2LL);
-
                     if((md*(pst + 2LL)) >= R1)
                     {
                         min_k = md;
@@ -50,7 +48,6 @@ int main()
                 while(st <= en)
                 {
                     md = (st + (en - st)/2LL);
-
                     if((md*(pst + 1LL)) <= R1)
                     {
                         max_k = md;

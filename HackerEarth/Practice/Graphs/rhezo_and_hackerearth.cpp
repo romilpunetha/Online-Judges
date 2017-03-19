@@ -2,17 +2,16 @@
 #define endl '\n'
 #define inf INT_MAX
 #define pb push_back
-#define der(c, x) ((c).find(x) != (c).end())
+#define der(c, x, y) ((c).find({x, y}) != (c).end())
 #define base 999983
 #define baseinv 943912055
-#define mod 1000000007
 #define ff first
 #define ss second
 #define V vector
 #define L list
 #define P pair
-#define M map
-#define S set
+#define MP map
+#define ST set
 #define UM unordered_map
 #define MM multimap
 #define UMM unordered_multimap
@@ -34,30 +33,47 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+Graph g;
+V<int> parent, low, disc, visited;
+ST<P<int, int> > bridge;
+MP<int, P<int, int> > mp;
+int t = 1;
+
+void find_bridge(int u){
+    visited[u] = 1;
+    disc[u] = low[u] = t++;
+    for(auto &v : g[u]){
+        if(!visited[v]){
+            parent[v] = u;
+            find_bridge(v);
+            low[u] = min(low[u], low[v]);
+            if(low[v] > disc[u]) bridge.insert({min(u, v), max(u, v)});
+        }
+        else if(v != parent[u]) low[u] = min(low[u], disc[v]);
+    }
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    ll n, sum = 0, even = 1, odd = 0; cin >> n;
-    V<ll> left(n + 2, 0), right, arr;
-    right = arr = left;
-    for(int i = 1; i <= n; i++){
-        cin >> arr[i];
-        sum += arr[i];
-        if(sum & 1) left[i] = odd++;
-        else  left[i] = even++;
+    int n, m, k; cin >> n >> m;
+    g = new L<int>[n + 10];
+    visited.resize(n, 0), parent.resize(n, -1);
+    low = disc  = visited;
+    for(int i = 1; i <= m; i++){
+        int u, v; cin >> u >> v;
+        g[u].pb(v);
+        g[v].pb(u);
+        mp[i] = {min(u, v), max(u, v)};
     }
-    even = 1, odd = 0, sum = 0;
-    for(int i = n; i >= 1; i--){
-        sum += arr[i];
-        if(sum & 1) right[i] = odd++;
-        else right[i] = even++;
+    for(int i = 1; i <= n; i++) if(!visited[i]) find_bridge(i);
+    cin >> k;
+    for(int i = 0; i < k; i++){
+        int t; cin >> t;
+        P<int, int> &p = mp[t];
+        if(der(bridge, p.ff, p.ss)) cout << "Unhappy\n";
+        else cout << "Happy\n";
     }
-    for(int i = n; i > 0; i--) right[i] += right[i + 1];
-    ll ans = 0;
-    for(int i = 1; i <= n; i++){
-        ans += left[i] * right[i + 1];
-        ans %= mod;
-    }
-    cout << ans << endl;
     return 0;
 }
+
 
