@@ -15,11 +15,10 @@
 #define UM unordered_map
 #define MM multimap
 #define UMM unordered_multimap
-#define MST multiset
-#define UST unordered_set
+#define MS multiset
+#define US unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Graph list<int>*
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
 #define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
@@ -33,8 +32,21 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+UM<int,ST<int>> g;
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n, m; cin >> n >> m;
+    for(int i = 1; i <= m; i++){
+        int u, v; cin >> u >> v;
+        g[u].insert(v);
+        g[v].insert(u);
+    }
+    int q; cin >> q; while(q--){
+        int u, v; cin >> u >> v;
+        if(der(g[u], v)) cout << "YES\n";
+        else cout << "NO\n";
+    }
     return 0;
 }
 

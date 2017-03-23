@@ -33,8 +33,54 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+int n, m;
+
+bool check(int i, int j){
+    return (i >= 0 && i < n && j >= 0 && j < n);
+}
+
+typedef struct ptr{
+    int i, j, t;
+    ptr(){
+        i = n - 1;
+        j = n - 1;
+        t = n - 1;
+    }
+
+    bool operator++(){
+        i--, j++;
+    }
+    bool operator--(){
+        i++, j--;
+    }
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n >> m;
+    V<V<ll> >arr(n, V<ll>(n, 1));
+    V<V<ll> >visited(n, V<ll>(n, 0));
+    ll sum = 0;
+    for(int i = 0; i < n; i++) for(int j = 0, t; j < n; j++) cin >> t, sum += t;
+    sum -= n * n;
+    ptr i, j;
+    int t = 1;
+    while(sum){
+        if(t){
+            if(visited[i.i][i.j]) i
+        }
+        else{
+
+        }
+        t++;
+        t %= 2;
+    }
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
     return 0;
 }
 

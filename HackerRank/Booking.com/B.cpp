@@ -33,8 +33,46 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+struct C{
+    bool operator()(const P<int, int> &a, const P<int, int> &b){
+        if(a.ss == b.ss) return a.ff < b.ff;
+        return a.ss > b.ss;
+    }
+};
+
+V<string> arr(1e6);
+int k = 0;
+
+void parse(string &s, char delim){
+    s += delim;
+    int prev = 0, curr  = 0, len = s.length();
+    for(int i = 0; i < len; i++) s[i] = tolower(s[i]);
+    while((curr = s.find(delim, prev)) != string::npos){
+        string subst = s.substr(prev, curr - prev);
+        prev = curr + 1;
+        if(!(subst[curr - prev - 1] >= 'a' && subst[curr - prev - 1]  <= 'z')) subst.pop_back();
+        arr[k++] = subst;
+    }
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    UST<string> st;
+    string t;
+    getline(cin, t);
+    parse(t, ' ');
+    for(int i = 0; i < k; i++) st.insert(arr[i]);
+    UM<int, int> mp;
+    ST<P<int, int>, C> stt;
+    getline(cin, t);
+    int m = stoi(t); while(m--){
+        int id, len; cin >> id;
+        getline(cin, t);
+        parse(t, ' ');
+        for(int i = 0; i < k; i++) if(der(st, arr[i])) mp[id]++;
+        stt.insert({id, mp[id]});
+    }
+    for(auto &it : stt) cout << it.ff << " ";
     return 0;
 }
 

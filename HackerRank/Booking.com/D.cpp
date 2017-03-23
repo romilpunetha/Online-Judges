@@ -35,6 +35,20 @@ typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    ll x, q, t1, t2, k = 0; cin >> x >> q;
+    V<P<ll, ll> >arr(2 * q);
+    while(q--){
+        cin >> t1 >> t2;
+        arr[k++] = {t2, 1};
+        arr[k++] = {t1, 0};
+    }
+    sort(all(arr));
+    int active = 0, mx = 0;
+    for(int i = 0; i < 2 * q; i++){
+        if(arr[i].ss == 0) active++, mx = max(mx, active);
+        else active--;
+    }
+    cout << mx - x << endl;
     return 0;
 }
 

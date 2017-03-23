@@ -33,8 +33,42 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+typedef struct BIT{
+    V<ll> bit;
+    BIT(){
+        bit = V<ll>(1e6 + 10, 0);
+    }
+    void update(ll i, ll val){
+        while(i <= 1e6){
+            bit[i] += val;
+            i += i & -i;
+        }
+    }
+
+    ll query(ll i){
+        ll sum = 0;
+        while(i){
+            sum += bit[i];
+            i -= i & -i;
+        }
+        return sum;
+    }
+}BIT;
+
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n; cin >> n;
+    V<ll> H(n), I(n), P(n, 0);
+    BIT count, val;
+    for(int i = 0; i < n; i++) cin >> H[i] >> I[i];
+    for(int i = n - 1; i >= 0; i--){
+        count.update(H[i], 1), val.update(H[i], I[i]);
+        ll low = count.query(H[i] - 1), hi = n - i - low;
+        ll p = val.query(H[i] - 1), q = val.query(1e6) - p;
+        P[i] = hi * I[i] - q + p - low * I[i];
+    }
+    for(auto &it : P) cout << it << endl;
     return 0;
 }
 

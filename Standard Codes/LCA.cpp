@@ -1,21 +1,21 @@
 ll maxn = 1e6, ln = 20;
 vector<vector<int> > pa(ln, vector<int>(maxn, -1));
 
-void dfs(node* root, int parent, int depth){
-    root -> level = depth;
-    pa[0][root -> id] = parent;
-    for(auto &it : root -> child){
-        dfs(it, root -> id, depth + 1);
+void dfs(int root, int parent, int depth){
+    level[root] = depth;
+    pa[0][root] = parent;
+    for(auto &it : g[root]){
+        dfs(it, root, depth + 1);
     }
 }
 
-ll lca(ll u, ll v){
-    if(tree[u] -> level < tree[v]-> level) swap(u, v);
-    for(int i = ln - 1; i >= 0; i--){
-        if(tree[u] -> level - (1 << i) >= tree[v] -> level){
-            u = pa[i][u];
-        }
+int lca(int u, int v){
+    if(level[u] < level[v]) swap(u, v);
+    int d = level[u] - level[v];
+    for(int i = 0; i <= ln; i++){
+        if((1 << i) & d) u = pa[i][u];
     }
+    if(u == v) return u;
     for(int i = ln - 1; i >= 0; i--){
         if(pa[i][u] != -1 && pa[i][u] != pa[i][v]){
             u = pa[i][u];

@@ -33,8 +33,29 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+V<ll> parse(string &s, char delim){
+    s += delim;
+    int prev = 0, curr  = 0;
+    while((curr = s.find(delim, prev)) != string::npos){
+        string subst = s.substr(prev, curr - prev);
+        prev = curr + 1;
+        arr.pb(stoi(subst));
+    }
+    return arr;
+}
+
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    string t; cin >> t;
+    V<ll> arr = parse(t, ' ');
+    int len = arr.size();
+    cout << arr[0] << " ";
+    for(int i = 1; i < len; i++){
+         ll diff = arr[i] - arr[i - 1];
+         if(diff < -127 || diff > 127) cout << -128 << " ";
+         cout << diff << " ";
+    }
     return 0;
 }
 
