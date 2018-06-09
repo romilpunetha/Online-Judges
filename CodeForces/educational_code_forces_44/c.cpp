@@ -19,7 +19,7 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Graph V<L<int> >
+#define Graph list<int>*
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
 #define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
@@ -33,8 +33,25 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+ll n, k, l, sum = 0;
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n >> k >> l;
+    V<ll> arr(n * k);
+    for(auto &it : arr) cin >> it;
+    sort(all(arr));
+    int j = n * k - 1;
+    while(j > 0 && arr[j] - arr[0] > l) j--;
+    if(j + 1 < n) cout << 0 << endl;
+    else{
+        ll remaining = n * k - j - 1;
+        while(n--){
+            if(remaining >= k - 1) sum += arr[j--], remaining -= k - 1;
+            else j -= k  - remaining, remaining = 0, sum += arr[j + 1];
+        }
+        cout << sum << endl;
+    }
     return 0;
 }
 
