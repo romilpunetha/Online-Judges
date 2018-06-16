@@ -19,6 +19,7 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
+#define Graph V<L<int> >
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
 #define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
@@ -34,36 +35,28 @@ typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n, m , k , s;
-    cin >> n >> m >> k >> s;
-    V<L<int>>g(n);
-    int arr[n][k];
-    memset(arr, 0, sizeof(arr));
-    queue<int> goods[k];
+    int a, n , m; cin >> a >> n >> m;
+    V<ll> arr(a + 10, 0), brr(a + 10, INT_MAX), crr(a + 10, INT_MAX);
+    brr[0] = 0;
+    int l, k;
     for(int i = 0; i < n; i++){
-        int t; cin >> t; t--;
-        arr[i][t] = 1;
-        goods[t].push(i);
+        cin >> l >> k;
+        while(l < k) arr[l] = 1, l++;
     }
     for(int i = 0; i < m; i++){
-        int u, v; cin >> u >> v; u--, v--;
-        g[u].pb(v), g[v].pb(u);
+        cin >> l >> k;
+        crr[l] = crr[l] < k ? crr[l] : k;
     }
-    for(int i = 0; i < k; i++){
-        while(!goods[i].empty()){
-            int u = goods[i].front();
-            goods[i].pop();
-            for(auto &v: g[u]){
-                if(!arr[v][i]) arr[v][i] = arr[u][i] + 1, goods[i].push(v);
+    for(int i = 1; i <= a; i++){
+        if(arr[i - 1]){
+            for(int j = 0; j < i; j++){
+
+                brr[i] = min(brr[i], brr[j] + crr[j] * (i - j));
             }
         }
+        else brr[i] = brr[i - 1];
     }
-    for(auto &it : arr) sort(it, it + k);
-    V<int> ans(n, 0);
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < s; j++)
-            ans[i] += arr[i][j];
-    for(auto &it : ans) cout << it - s << " ";
+    cout << (brr[a] < 1e9 ? brr[a] : -1) << endl;
     return 0;
 }
 

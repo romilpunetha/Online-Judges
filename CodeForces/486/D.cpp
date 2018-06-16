@@ -19,6 +19,7 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
+#define Graph V<L<int> >
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
 #define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
@@ -34,36 +35,31 @@ typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n, m , k , s;
-    cin >> n >> m >> k >> s;
-    V<L<int>>g(n);
-    int arr[n][k];
+    int n; cin >> n;
+    int arr[n][32];
+    V<int> inp(n);
     memset(arr, 0, sizeof(arr));
-    queue<int> goods[k];
-    for(int i = 0; i < n; i++){
-        int t; cin >> t; t--;
-        arr[i][t] = 1;
-        goods[t].push(i);
-    }
-    for(int i = 0; i < m; i++){
-        int u, v; cin >> u >> v; u--, v--;
-        g[u].pb(v), g[v].pb(u);
-    }
-    for(int i = 0; i < k; i++){
-        while(!goods[i].empty()){
-            int u = goods[i].front();
-            goods[i].pop();
-            for(auto &v: g[u]){
-                if(!arr[v][i]) arr[v][i] = arr[u][i] + 1, goods[i].push(v);
-            }
+    MP<int, int> st;
+    for(int i = 0; i < n; i++) cin >> inp[i];
+    sort(all(inp));
+    for(int i = 0; i < n; i++) st[inp[i]] = i;
+    for(auto &it : st){
+        for(int i = 0; i < 32; i++){
+            int k = it.ff + (1 << i);
+            st.find(k) != st.end() ? arr[st[k]][i] = max(arr[st[k]][i], arr[st[it.ff]][i] + 1) : 0;
         }
     }
-    for(auto &it : arr) sort(it, it + k);
-    V<int> ans(n, 0);
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < s; j++)
-            ans[i] += arr[i][j];
-    for(auto &it : ans) cout << it - s << " ";
+    int a = 0, b = 0, ans = 0;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < 32; j++){
+            if(arr[i][j] > ans) ans = arr[i][j], a = i, b = j;
+        }
+    }
+    ans++;
+    cout << min(ans, 3) << endl;
+    for(int i = 0; i < min(ans, 3); i++){
+        cout << inp[a] - (i * (1 << b)) << " ";
+    }
     return 0;
 }
 

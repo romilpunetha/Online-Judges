@@ -19,6 +19,7 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
+#define Graph V<L<int> >
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
 #define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
@@ -32,38 +33,46 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+
+int util(int a, int b, V<int> arr){
+    int l = arr.size();
+    int ans = 0;
+    int j = l - 1, i = l - 2;
+    while(j >= 0 && arr[j] != b) j--;
+    if(j < 0) return INT_MAX;
+    while(j + 1 < l) swap(arr[j], arr[j + 1]), ans++, j++;
+    while(i >= 0 && arr[i] != a) i--;
+    if(i < 0) return INT_MAX;
+    while(i + 1 < l - 1) swap(arr[i], arr[i + 1]), ans++, i++;
+    int k = 0;
+    if(arr[k] == 0){
+        while(arr[k] == 0) k++;
+        if(k == l - 2 || k == l - 1) return INT_MAX;
+        while(k - 1 >= 0) swap(arr[k], arr[k - 1]), ans++, k--;
+    }
+    return ans;
+}
+
+void solve(ll n){
+    V<int> arr;
+    while(n){
+        arr.pb(n % 10);
+        n /= 10;
+    }
+    reverse(all(arr));
+    int cnt = INT_MAX;
+    cnt = min(cnt, util(0, 0, arr));
+    cnt = min(cnt, util(2, 5, arr));
+    cnt = min(cnt, util(5, 0, arr));
+    cnt = min(cnt, util(7, 5, arr));
+    if(cnt == INT_MAX) cout << "-1" << endl;
+    else cout << cnt << endl;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n, m , k , s;
-    cin >> n >> m >> k >> s;
-    V<L<int>>g(n);
-    int arr[n][k];
-    memset(arr, 0, sizeof(arr));
-    queue<int> goods[k];
-    for(int i = 0; i < n; i++){
-        int t; cin >> t; t--;
-        arr[i][t] = 1;
-        goods[t].push(i);
-    }
-    for(int i = 0; i < m; i++){
-        int u, v; cin >> u >> v; u--, v--;
-        g[u].pb(v), g[v].pb(u);
-    }
-    for(int i = 0; i < k; i++){
-        while(!goods[i].empty()){
-            int u = goods[i].front();
-            goods[i].pop();
-            for(auto &v: g[u]){
-                if(!arr[v][i]) arr[v][i] = arr[u][i] + 1, goods[i].push(v);
-            }
-        }
-    }
-    for(auto &it : arr) sort(it, it + k);
-    V<int> ans(n, 0);
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < s; j++)
-            ans[i] += arr[i][j];
-    for(auto &it : ans) cout << it - s << " ";
+    ll n; cin >> n;
+    solve(n);
     return 0;
 }
 

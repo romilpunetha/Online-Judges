@@ -1,0 +1,107 @@
+#include<bits/stdc++.h>
+#define endl '\n'
+#define inf INT_MAX
+#define pb push_back
+#define der(c, x) ((c).find(x) != (c).end())
+#define base 999983
+#define baseinv 943912055
+#define ff first
+#define ss second
+#define V vector
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Graph V<L<int> >
+#define tr1(x)                cerr << #x << ": " << x << endl;
+#define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
+#define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
+#define tr4(a, b, c, d)       cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << endl;
+#define tr5(a, b, c, d, e)    cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << " | " << #e << ": " << e << endl;
+#define tr6(a, b, c, d, e, f) cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << " | " << #e << ": " << e << " | " << #f << ": " << f << endl;
+#define all(a) (a).begin(),(a).end()
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+typedef double dbl;
+typedef long double ldbl;
+
+int a, b, c, d, global = 0;
+
+int lim_a = 4, lim_b = 7;
+
+V<V<char> > arr(lim_a, V<char>(lim_b, ' '));
+V<V<bool> > visited;
+V<int> ans;
+
+int x[] = {0, 1, 0, -1};
+int y[] = {1, 0, -1, 0};
+
+bool is_valid(int i, int j){
+    return i >= 0 && i < lim_a && j >= 0 && j < lim_b;
+}
+
+void dfs(V<V<char>> &arr, V<V<bool> > &visited, int i, int j){
+    if(visited[i][j]) return;
+    visited[i][j] = 1;
+    for(int k = 0; k < 4; k++){
+        if(is_valid(i + x[k], j + y[k]) && arr[i][j] == arr[i + x[k]][j + y[k]])
+            dfs(arr, visited, i + x[k], j + y[k]);
+    }
+}
+
+bool check(V<V<char> > &arr, V<V<bool> > &visited){
+    ans.resize(4, 0);
+    for(int i = 0; i < lim_a; i++){
+        for(int j = 0; j < lim_b; j++){
+            if(!visited[i][j]){
+                dfs(arr, visited, i, j);
+                ans[arr[i][j] - 'A']++;
+            }
+        }
+    }
+    tr4(ans[0], ans[1], ans[2], ans[3]);
+    for(auto &it : arr){
+        for(auto &jt: it) cout << jt;
+        cout << endl;
+    }
+    cout << endl;
+    if(ans[0] == a && ans[1] == b && ans[2] == c && ans[3] == d){
+        cout << "50 50" << endl;
+        for(auto &it : arr){
+            for(auto &jt: it) cout << jt;
+        }
+        cout << endl;
+        return 1;
+    }
+    return 0;
+}
+
+void fill(V<V<char> > &arr, int i, int j){
+    if(global) return;
+    if(j == lim_b) i++, j = 0;
+    if(i == lim_a){
+        visited.resize(lim_a, V<bool>(lim_b, 0));
+        if(check(arr, visited)) global = 1;
+        return;
+    }
+    for(char c = 'A'; c <= 'D'; c++){
+        arr[i][j] = c;
+        fill(arr, i, j + 1);
+    }
+}
+
+int main(){
+    ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> a >> b >> c >> d;
+    fill(arr, 0, 0);
+    return 0;
+}
+

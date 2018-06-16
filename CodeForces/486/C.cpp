@@ -19,6 +19,7 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
+#define Graph V<L<int> >
 #define tr1(x)                cerr << #x << ": " << x << endl;
 #define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
 #define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
@@ -34,36 +35,26 @@ typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int n, m , k , s;
-    cin >> n >> m >> k >> s;
-    V<L<int>>g(n);
-    int arr[n][k];
-    memset(arr, 0, sizeof(arr));
-    queue<int> goods[k];
-    for(int i = 0; i < n; i++){
-        int t; cin >> t; t--;
-        arr[i][t] = 1;
-        goods[t].push(i);
-    }
-    for(int i = 0; i < m; i++){
-        int u, v; cin >> u >> v; u--, v--;
-        g[u].pb(v), g[v].pb(u);
-    }
-    for(int i = 0; i < k; i++){
-        while(!goods[i].empty()){
-            int u = goods[i].front();
-            goods[i].pop();
-            for(auto &v: g[u]){
-                if(!arr[v][i]) arr[v][i] = arr[u][i] + 1, goods[i].push(v);
+    V<int> arr;
+    UM<int, UM<int, int> > mp;
+    int t; cin >> t;
+    for(int j = 0; j < t; j++){
+        int s = 0;
+        int n; cin >> n;
+        arr.resize(n);
+        for(auto &it : arr) cin >> it, s += it;
+        for(int i = 0; i < n; i++){
+            auto it = find_if(all(mp[s - arr[i]]), [&j](const UM<int, int>::value_type &a){ return a.ff != j; });
+            if(it != mp[s - arr[i]].end()){
+                cout << "YES" << endl;
+                cout << j + 1 << " " << i + 1 << endl;
+                cout << it -> ff + 1 << " " << it -> ss + 1 << endl;
+                return 0;
             }
+            mp[s - arr[i]][j] = i;
         }
     }
-    for(auto &it : arr) sort(it, it + k);
-    V<int> ans(n, 0);
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < s; j++)
-            ans[i] += arr[i][j];
-    for(auto &it : ans) cout << it - s << " ";
+    cout << "NO" << endl;
     return 0;
 }
 
