@@ -1,0 +1,67 @@
+MAP
+UNORDERED_MAP
+MULTIMAP
+UNORDERED_MULTIMAP
+PRIORITY_QUEUE
+
+Class Comp{
+    bool operator ()(int a, int b){
+    return a < b;
+    }
+}
+
+SET
+
+set<int, Comp> st;
+1. immutable
+2. BST
+3. No duplicates
+4. *st.begin() ### auto it = st.begin(); it++; // second element
+5. *st.rbegin() ### auto it = st.rbegin(); it++; // second last 
+6. FIND = O(LOGN)
+7. INSERT = O(LOGN)
+8. DELETE = O(LOGN)
+9. UPDATE = NOT ALLOWED
+
+UNORDERED_SET 
+
+unordered_set<int> st;
+1. hash map
+2. FIND = O(1)
+3. INSERT = O(1)
+4. DELETE = O(1)
+5. UPDATE = NOT ALLOWED
+6. Not sorted
+7. No duplicates
+
+MULTISET
+1. immutable
+2. BST
+3. duplicates allowed
+4. *st.begin() ### auto it = st.begin(); it++; // second element
+5. *st.rbegin() ### auto it = st.rbegin(); it++; // second last 
+6. FIND = O(LOGN)
+7. INSERT = O(LOGN)
+8. DELETE = O(LOGN)
+9. UPDATE = NOT ALLOWED
+
+UNORDERED_MULTISET
+1. hash map
+2. FIND = O(1)
+3. INSERT = O(1)
+4. DELETE = O(1)
+5. UPDATE = NOT ALLOWED
+6. Not sorted
+7. duplicates allowed
+
+
+
+map<int, int> mp;
+mp[1] = 10;
+mp[2] = 20;
+mp.insert({1, 10});
+Map is a set with a key value pair. Set is only a key store.
+
+
+st.find(x) != st.end()
+

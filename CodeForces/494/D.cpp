@@ -19,8 +19,6 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Pii P<int, int>
-#define Pll P<long long, long long>
 #define Graph V<L<int> >
 #define all(a) (a).begin(),(a).end()
 #define tr1(x)                cerr << #x << ": " << x << endl;
@@ -46,6 +44,23 @@ typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n, q; cin >> n >> q;
+    MP<ll, ll> mp;
+    for(ll i = 0, t; i < n; i++) cin >> t, mp[t]++;
+    while(q--){
+        ll t; cin >> t;
+        ll ans = 0;
+        for(ll i = 40; i >= 0; i--){
+            ll num = 1ll << i;
+            if(t >= num){
+                ll q = min(t / num, mp[num]);
+                ans += q;
+                t -= q * num;
+            }
+        }
+        if(!t) cout << ans << endl;
+        else cout << -1 << endl;
+    }
     return 0;
 }
 

@@ -19,8 +19,6 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Pii P<int, int>
-#define Pll P<long long, long long>
 #define Graph V<L<int> >
 #define all(a) (a).begin(),(a).end()
 #define tr1(x)                cerr << #x << ": " << x << endl;
@@ -44,8 +42,46 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+V<int> vis;
+Graph g;
+
+void dfs(int u){
+    vis[u] = 1;
+    for(auto &v : g[u]){
+        if(!vis[v]) cout << u << " " << v << endl, dfs(v);
+    }
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n, d, k; cin >> n >> d >> k;
+    V<int> degree(n + 100, 0);
+    g.resize(n + 100);
+    vis = degree;
+    if(n <= d) return cout << "NO" << endl, 0;
+    PQ<P<int, int>, V<P<int, int> >, greater<P<int, int> > > pq;
+    for(int i = 1; i <= d; i++) g[i].pb(i + 1), g[i + 1].pb(i), degree[i + 1]++, degree[i]++;
+    for(int i = 2; i <= d; i++) pq.push({max(i - 1, d - i + 1), i});
+    n -= d + 1;
+    int m = d + 2;
+    while(n > 0 && !pq.empty()){
+        auto t = pq.top();
+        pq.pop();
+        if(t.ff < d && degree[t.ss] < k){
+            degree[t.ss]++, degree[m]++;
+            if(degree[m] < k) pq.push({t.ff + 1, m});
+            if(degree[t.ss] < k) pq.push({t.ff, t.ss});
+            g[m].pb(t.ss);
+            g[t.ss].pb(m);
+            m++, n--;
+        }
+    }
+    for(auto &it : degree) if(it > k) n = -1;
+    if(n != 0) cout << "NO" << endl;
+    else{
+        cout << "YES" << endl;
+        dfs(1);
+    }
     return 0;
 }
 

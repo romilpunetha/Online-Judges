@@ -19,8 +19,6 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Pii P<int, int>
-#define Pll P<long long, long long>
 #define Graph V<L<int> >
 #define all(a) (a).begin(),(a).end()
 #define tr1(x)                cerr << #x << ": " << x << endl;
@@ -44,8 +42,44 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+V<bool> visited;
+V<ll>deg;
+Graph g;
+
+ll dfs(int u){
+    if(visited[u]) return 0;
+    visited[u] = 1;
+    ll cnt = deg[u] & 1;
+    for(auto v : g[u]){
+        cnt += dfs(v);
+    }
+    return cnt;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int T; cin >> T; while(T--){
+        int n, m; cin >> n >> m;
+        g.clear(), g.resize(n + 1);
+        visited.clear(), visited.resize(n + 1, 0);
+        deg.clear(), deg.resize(n + 1, 0);
+        for(int i = 0; i < m; i++){
+            int u, v; cin >> u >> v;
+            g[u].pb(v);
+            g[v].pb(u);
+            deg[u]++, deg[v]++;
+        }
+        V<int> comp;
+        for(int i = 1; i <= n; i++){
+            if(!visited[i]) comp.pb(dfs(i));
+        }
+        ll ans = 0;
+        for(auto &it : comp){
+            if(it) ans += (it - 2) >> 1;
+        }
+        if(comp.size() == 1 && !comp[0]) cout << 0 << endl;
+        else cout << ans + comp.size() << endl;
+    }
     return 0;
 }
 

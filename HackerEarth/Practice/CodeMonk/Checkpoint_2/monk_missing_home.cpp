@@ -19,8 +19,6 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Pii P<int, int>
-#define Pll P<long long, long long>
 #define Graph V<L<int> >
 #define all(a) (a).begin(),(a).end()
 #define tr1(x)                cerr << #x << ": " << x << endl;
@@ -44,8 +42,41 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+ll n, d, res = 0;
+V<MP<ll, ll> > arr;
+V<P<int, int> >edge;
+V<ll> del, p, ans, cnt;
+
+int get(int x) {
+    return x == p[x]? x : (p[x] = get(p[x]));
+}
+
+void merge(int x, int y){
+    x = get(x);
+    y = get(y);
+    p[x] = y;
+    for(auto &it : arr[x]){
+        for(int j = -d; j <= d; j++){
+            if(der(arr[y], it.ff + j)) res += it.ss * arr[y][it.ff + j];
+        }
+    }
+    for(auto &it : arr[x]) arr[y][it.ff] += it.ss;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n >> d;
+    arr.resize(n), edge.resize(n - 1), del.resize(n - 1), p.resize(n), cnt.resize(n, 0);
+    for(int i = 0; i < n; i++){
+        int t; cin >> t; arr[i].insert({t, 1});
+        p[i] = i;
+    }
+    for(auto &it : edge) cin >> it.ff >> it.ss, it.ff--, it.ss--;
+    for(auto &it : del) cin >> it, it--;
+    reverse(all(del));
+    for(auto &it : del) ans.pb(res), merge(edge[it].ff, edge[it].ss);
+    reverse(all(ans));
+    for(auto &it : ans) cout << it << endl;
     return 0;
 }
 

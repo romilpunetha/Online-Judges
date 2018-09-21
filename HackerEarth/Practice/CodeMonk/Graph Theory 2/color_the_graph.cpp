@@ -19,8 +19,6 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Pii P<int, int>
-#define Pll P<long long, long long>
 #define Graph V<L<int> >
 #define all(a) (a).begin(),(a).end()
 #define tr1(x)                cerr << #x << ": " << x << endl;
@@ -44,8 +42,46 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+V<int> visited, color;
+Graph g;
+int clr, f;
+
+int dfs(int u, int c, int p){
+    if(visited[u]){
+        if(p != -1 && color[u] != c) f = 1;
+        return 0;
+    }
+    visited[u] = 1;
+    color[u] = c;
+    if(c) clr++;
+    int sz = 1;
+    for(auto &v: g[u]){
+        sz += dfs(v, c ^ 1, u);
+    }
+    return sz;
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int T; cin >> T; while(T--){
+        int n, m, ans = 0; cin >> n >> m;
+        f = 0;
+        visited.clear(); visited.resize(n + 1, 0);
+        color.clear(); color.resize(n + 1, -1);
+        g.clear(); g.resize(n + 10);
+        for(int i = 0; i < m; i++){
+            int u, v; cin >> u >> v;
+            g[u].pb(v);
+            g[v].pb(u);
+        }
+        for(int i = 1; i <= n; i++){
+            clr = 0;
+            int sz = dfs(i, 0, -1);
+            ans += max(clr, sz - clr);
+        }
+        if(f) cout << "NO" << endl;
+        else cout << ans << endl;
+    }
     return 0;
 }
 

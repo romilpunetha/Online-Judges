@@ -19,8 +19,6 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Pii P<int, int>
-#define Pll P<long long, long long>
 #define Graph V<L<int> >
 #define all(a) (a).begin(),(a).end()
 #define tr1(x)                cerr << #x << ": " << x << endl;
@@ -44,8 +42,53 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+int n, m, A, B, mod = 1e9 + 7;
+
+void getShortestPath(Graph &g, int S, V<ll> &visited, V<ll> &cnt, V<ll> &val){
+    queue<int> q;
+    cnt[S] =  visited[S] = 1;
+    val[S] = 0;
+    q.push(S);
+    while(!q.empty()){
+        int u = q.front();
+        q.pop();
+        for(auto &v : g[u]){
+            if(!visited[v]){
+                val[v] = val[u] + 1;
+                cnt[v] = cnt[u];
+                visited[v] = 1;
+                q.push(v);
+            }
+            else if(val[v] == val[u] + 1){
+                cnt[v] += cnt[u];
+            }
+            cnt[v] %= mod;
+        }
+    }
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n >> m;
+    V<ll> visitedA(n + 1, 0), cntA(n + 1, 0), valA(n + 1, 0);
+    V<ll> visitedB(n + 1, 0), cntB(n + 1, 0), valB(n + 1, 0);
+    Graph g(n + 1);
+    for(int i = 0; i < m; i++){
+        int u, v; cin >> u >> v;
+        g[u].pb(v);
+        g[v].pb(u);
+    }
+    cin >> A >> B;
+    getShortestPath(g, A, visitedA, cntA, valA);
+    getShortestPath(g, B, visitedB, cntB, valB);
+    ST<int> st;
+    for(int i = 1; i <= n; i++){
+        if(i != A && i !=B && cntA[B] != 0 && (cntA[i] * cntB[i]) % mod == cntA[B] && valA[i] + valB[i] == valA[B]){
+            st.insert(i);
+        }
+    }
+    if(!st.size()) cout << "-1" << endl;
+    else cout << *st.begin() << endl;
     return 0;
 }
 

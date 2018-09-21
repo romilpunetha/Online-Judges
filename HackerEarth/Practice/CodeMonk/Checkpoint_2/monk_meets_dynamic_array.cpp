@@ -19,8 +19,6 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Pii P<int, int>
-#define Pll P<long long, long long>
 #define Graph V<L<int> >
 #define all(a) (a).begin(),(a).end()
 #define tr1(x)                cerr << #x << ": " << x << endl;
@@ -46,6 +44,44 @@ typedef long double ldbl;
 
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    int n, q; cin >> n >> q;
+    V<int> arr[3];
+    for(int i = 0; i < 3; i++) arr[i] = V<int>(2e6 + 10, -1);
+    MST<int> st;
+    for(int i = 0; i < n; i++){
+        cin >> arr[0][i];
+        st.insert(arr[0][i]);
+        auto it = st.lower_bound(arr[0][i]);
+        it++;
+        if(it != st.end()){
+            arr[2][i] = *it;
+            st.erase(it);
+        }
+        arr[1][i] = st.size();
+    }
+    while(q--){
+        int type; cin >> type;
+        if(type == 1){
+            cin >> arr[0][n];
+            st.insert(arr[0][n]);
+            auto it = st.lower_bound(arr[0][n]);
+            it++;
+            if(it != st.end()){
+                arr[2][n] = *it;
+                st.erase(it);
+            }
+            arr[1][n] = st.size();
+            n++;
+            cout << st.size() << endl;
+        }
+        else{
+            n--;
+            st.erase(st.find(arr[0][n]));
+            if(arr[2][n] != -1) st.insert(arr[2][n]);
+            arr[2][n] = -1;
+            arr[1][n] = st.size();
+            cout << arr[1][n] << endl;
+        }
+    }
     return 0;
 }
-

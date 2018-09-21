@@ -1,3 +1,4 @@
+
 #include<bits/stdc++.h>
 #define endl '\n'
 #define inf INT_MAX
@@ -19,8 +20,6 @@
 #define UST unordered_set
 #define UMS unordered_multiset
 #define PQ priority_queue
-#define Pii P<int, int>
-#define Pll P<long long, long long>
 #define Graph V<L<int> >
 #define all(a) (a).begin(),(a).end()
 #define tr1(x)                cerr << #x << ": " << x << endl;
@@ -44,8 +43,28 @@ typedef unsigned long long ull;
 typedef double dbl;
 typedef long double ldbl;
 
+int n, k;
+V<ldbl> arr;
+ldbl ans = 0.0;
+
+void solve(int k){
+    int i = 0, start = 0;
+    ldbl sum = 0.0;
+    while(i < n){
+        while(i < n && i - start + 1 <= k) sum += arr[i], i++;
+        ans = max(ans, sum / (k * 1.0));
+        sum -= arr[start];
+        start++;
+    }
+}
+
 int main(){
     ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+    cin >> n >> k;
+    arr.resize(n);
+    for(auto &it : arr) cin >> it;
+    for(int i = k; i <= n; i++) solve(i);
+    cout << fixed << setprecision(15) << ans << endl;
     return 0;
 }
 
