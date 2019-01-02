@@ -9,7 +9,7 @@ set so=7
 :imap <F2> <esc><esc><esc>magg=G`a:w!<CR>i
 :nmap <F4> :wqa!<CR>
 :imap <F4> <esc>:wqa!<CR>
-autocmd BufNewFile *.cpp r e:/Programs/OJs/template2.cpp
+autocmd BufNewFile *.cpp r /Users/romilpunetha/Online-Judges/template2.cpp
 syntax on
 filetype on
 set number                      " Line numbers on
@@ -33,7 +33,7 @@ set splitbelow                  " Puts new split windows to the bottom of the cu
 set noeb vb t_vb=
 set mouse=a
 set t_vb=
-colorscheme google
+colorscheme ir_black
 syntax enable
 filetype plugin indent on
 set tm=500
