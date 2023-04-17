@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include <algorithm>
 #include <bitset>
 #include <cmath>
@@ -15,54 +17,47 @@
 #include <set>
 #include <sstream>
 #include <stack>
+#include <string>
 #include <utility>
 #include <vector>
-#include <string.h>
-#include <string>
 
 using namespace std;
 
-int main()
-{
+int main() {
     int test;
     string exp;
     stack<char> operators;
-    cin>>test;
-    while(test--)
-    {
-        cin>>exp;
-        string result="";
-        int i=0;
-        while(exp[i])
-        {
-            switch(exp[i])
-            {
+    cin >> test;
+    while (test--) {
+        cin >> exp;
+        string result = "";
+        int i = 0;
+        while (exp[i]) {
+            switch (exp[i]) {
                 case '+':
                 case '-':
                 case '*':
                 case '/':
                 case '^':
-                case '(':
-                    {
-                        operators.push(exp[i]);
-                        break;
+                case '(': {
+                    operators.push(exp[i]);
+                    break;
+                }
+                case ')': {
+                    while (operators.top() != '(') {
+                        result = result + operators.top();
+                        operators.pop();
                     }
-                case ')':{
-                             while(operators.top()!='(')
-                             {
-                                 result=result+operators.top();
-                                 operators.pop();
-                             }
-                             operators.pop();
-                             break;
-                         }
-                default:{
-                            result+=exp[i] ;
-                        }
+                    operators.pop();
+                    break;
+                }
+                default: {
+                    result += exp[i];
+                }
             }
             i++;
         }
-        cout<<result<<endl;
+        cout << result << endl;
         result.clear();
         exp.clear();
     }

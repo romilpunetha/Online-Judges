@@ -1,16 +1,13 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    int test;cin>>test;
-    while(test--)
-    {
-
+    int test;
+    cin >> test;
+    while (test--) {
     }
     return 0;
 }
-

@@ -1,5 +1,7 @@
-#include <algorithm>
 #include <limits.h>
+#include <string.h>
+
+#include <algorithm>
 #include <bitset>
 #include <cmath>
 #include <cstdio>
@@ -16,55 +18,46 @@
 #include <set>
 #include <sstream>
 #include <stack>
-#include <utility>
-#include <vector>
-#include <string.h>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int size;
-    cin>>size;
-    vector<int>arr(size,0);
-    int min=INT_MAX;
-    int count=0;
-    for(int i=0;i<size;i++)
-    {
-        cin>>arr[i];
-        if(arr[i]<min)
-        {
-            min=arr[i];
+    cin >> size;
+    vector<int> arr(size, 0);
+    int min = INT_MAX;
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+        cin >> arr[i];
+        if (arr[i] < min) {
+            min = arr[i];
         }
     }
-    while(1)
-    {
-        count=0;int flag=1;
-        for(int i=0;i<size;i++)
-        {
-            if(arr[i]!=0)
-            {
-                arr[i]-=min;
+    while (1) {
+        count = 0;
+        int flag = 1;
+        for (int i = 0; i < size; i++) {
+            if (arr[i] != 0) {
+                arr[i] -= min;
                 count++;
-                flag=0;
+                flag = 0;
             }
         }
-        min=INT_MAX;
-        for(int i=0;i<size;i++)
-        {
-            if(arr[i]!=0 && arr[i]<min)
-            {
-                min=arr[i];
+        min = INT_MAX;
+        for (int i = 0; i < size; i++) {
+            if (arr[i] != 0 && arr[i] < min) {
+                min = arr[i];
             }
         }
-        if(flag==1)
-        {
+        if (flag == 1) {
             break;
         }
-        cout<<count<<endl;
+        cout << count << endl;
     }
     return 0;
 }

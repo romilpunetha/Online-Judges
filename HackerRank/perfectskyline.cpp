@@ -1,5 +1,7 @@
-#include <algorithm>
 #include <limits.h>
+#include <string.h>
+
+#include <algorithm>
 #include <bitset>
 #include <cmath>
 #include <cstdio>
@@ -16,55 +18,42 @@
 #include <set>
 #include <sstream>
 #include <stack>
-#include <utility>
-#include <vector>
-#include <string.h>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int size;
-    cin>>size;
-    vector<int>A(size);
-    for(int i=0;i<size;i++)
-    {
-        cin>>A[i];
+    cin >> size;
+    vector<int> A(size);
+    for (int i = 0; i < size; i++) {
+        cin >> A[i];
     }
-    if(size%2==0)
-    {
-        cout<<"Not Perfect"<<endl;
-    }
-    else
-    {
-        int a=0,b=size-1;
-        while(a<b)
-        {
-            if(a>0 && b<size-1)
-            {
-                if(A[a-1]>=A[a] || A[b+1]>=A[b])
-                {
-                    cout<<"Not Perfect"<<endl;
+    if (size % 2 == 0) {
+        cout << "Not Perfect" << endl;
+    } else {
+        int a = 0, b = size - 1;
+        while (a < b) {
+            if (a > 0 && b < size - 1) {
+                if (A[a - 1] >= A[a] || A[b + 1] >= A[b]) {
+                    cout << "Not Perfect" << endl;
                     break;
                 }
             }
-            if(A[a]!=A[b])
-            {
-                cout<<"Not Perfect"<<endl;
+            if (A[a] != A[b]) {
+                cout << "Not Perfect" << endl;
                 break;
-            }
-            else
-            {
+            } else {
                 a++;
                 b--;
             }
         }
-        if(a==b)
-        {
-            cout<<"Perfect"<<endl;
+        if (a == b) {
+            cout << "Perfect" << endl;
         }
     }
     return 0;

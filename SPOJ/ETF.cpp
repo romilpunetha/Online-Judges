@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include <algorithm>
 #include <bitset>
 #include <cmath>
@@ -15,52 +17,38 @@
 #include <set>
 #include <sstream>
 #include <stack>
+#include <string>
 #include <utility>
 #include <vector>
-#include <string.h>
-#include <string>
 using namespace std;
 
-int totient(int num)
-{
-    int result=num;
-    for(int i=2;i*i<=num;i++)
-    {
-        if(num%i==0)
-        {
-            while(num%i==0)
-            {
-                num=num/i;
+int totient(int num) {
+    int result = num;
+    for (int i = 2; i * i <= num; i++) {
+        if (num % i == 0) {
+            while (num % i == 0) {
+                num = num / i;
             }
-            result=result- result/i;
+            result = result - result / i;
         }
     }
-    if(num>1)
-    {
-        result=result-result/num;
+    if (num > 1) {
+        result = result - result / num;
     }
     return (int)(result);
-
 }
 
-
-int main()
-{
+int main() {
     int test;
-    cin>>test;
-    while(test--)
-    {
+    cin >> test;
+    while (test--) {
         int num;
-        cin>>num;
-        if(num==1)
-        {
-            cout<<"1"<<endl;
+        cin >> num;
+        if (num == 1) {
+            cout << "1" << endl;
+        } else {
+            cout << totient(num) << endl;
         }
-        else
-        {
-            cout<<totient(num)<<endl;
-        }
-
     }
     return 0;
 }

@@ -1,19 +1,18 @@
-//educational codeforces 15 tshirt
-#include <iostream>
-#include <fstream>
-#include <set>
-#include <map>
-#include <string>
-#include <vector>
-#include <bitset>
+// educational codeforces 15 tshirt
 #include <algorithm>
-#include <cstring>
-#include <cstdlib>
-#include <cmath>
+#include <bitset>
 #include <cassert>
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+#include <map>
 #include <queue>
 #include <random>
-
+#include <set>
+#include <string>
+#include <vector>
 
 typedef long long ll;
 typedef long double ld;
@@ -69,7 +68,6 @@ node *push(node *v) {
     return v2;
 }
 
-
 node *merge(node *l, node *r) {
     if (!l)
         return r;
@@ -80,8 +78,7 @@ node *merge(node *l, node *r) {
         l->r = merge(l->r, r);
         upd(l);
         return l;
-    }
-    else {
+    } else {
         r = push(r);
         r->l = merge(l, r->l);
         upd(r);
@@ -99,8 +96,7 @@ void split(node *v, int k, node *&l, node *&r) {
         split(v->l, k, l, v->l);
         upd(v);
         r = v;
-    }
-    else {
+    } else {
         split(v->r, k - (v->l ? v->l->sz : 0) - 1, v->r, r);
         upd(v);
         l = v;
@@ -115,7 +111,6 @@ int get(node *v, int x) {
         return v->x;
     return v->d + get(v->r, x - szl - 1);
 }
-
 
 int n;
 pair<int, int> a[220000];
@@ -149,7 +144,6 @@ void rebuild() {
     ndcnt = vv.size();
     root = mem + st;
 }
-
 
 int main() {
     scanf("%d", &n);

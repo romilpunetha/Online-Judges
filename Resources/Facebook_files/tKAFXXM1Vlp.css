@@ -1,6 +1,13 @@
-/*!CK:2449752316!*//*1446435755,*/
+/*!CK:2449752316!*/ /*1446435755,*/
 
-._4kgv ._4qeb{border-radius:50%;overflow:hidden}
+._4kgv ._4qeb {
+  border-radius: 50%;
+  overflow: hidden;
+}
 
-#bootloader_q_uv0 { height: 42px; }
-.bootloader_q_uv0 { display:block !important; }
+#bootloader_q_uv0 {
+  height: 42px;
+}
+.bootloader_q_uv0 {
+  display: block !important;
+}

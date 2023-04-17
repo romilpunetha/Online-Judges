@@ -1,5 +1,7 @@
-#include <algorithm>
 #include <limits.h>
+#include <string.h>
+
+#include <algorithm>
 #include <bitset>
 #include <cmath>
 #include <cstdio>
@@ -16,22 +18,19 @@
 #include <set>
 #include <sstream>
 #include <stack>
-#include <utility>
-#include <vector>
-#include <string.h>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
-    while(cin)
-    {
-        long long int m,n,k;
-        cin>>m>>n>>k;
-        cout<<m<<" "<<n<<" "<<k<<"\n";
+    while (cin) {
+        long long int m, n, k;
+        cin >> m >> n >> k;
+        cout << m << " " << n << " " << k << "\n";
     }
     return 0;
 }

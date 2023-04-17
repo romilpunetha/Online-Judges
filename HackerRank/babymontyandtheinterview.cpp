@@ -1,5 +1,7 @@
-#include <algorithm>
 #include <limits.h>
+#include <string.h>
+
+#include <algorithm>
 #include <bitset>
 #include <cmath>
 #include <cstdio>
@@ -16,58 +18,44 @@
 #include <set>
 #include <sstream>
 #include <stack>
-#include <utility>
-#include <vector>
-#include <string.h>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
-long long int combination(int num)
-{
-    long long int res=((num*(num-1))/2)%1000000007;
+long long int combination(int num) {
+    long long int res = ((num * (num - 1)) / 2) % 1000000007;
     return res;
 }
 
-
-void color(vector<list<int> >&g,int source,int &odd,int &even,int size)
-{
-    vector<int> visited(size+1,0);
-    visited[source]=1;
-    queue<int>q;
-    int toggle=1;
+void color(vector<list<int> > &g, int source, int &odd, int &even, int size) {
+    vector<int> visited(size + 1, 0);
+    visited[source] = 1;
+    queue<int> q;
+    int toggle = 1;
     list<int>::iterator it;
     q.push(-1);
     q.push(source);
-    while(!q.empty())
-    {
-        int u=q.front();
+    while (!q.empty()) {
+        int u = q.front();
         q.pop();
-        if(u==-1)
-        {
-            if(q.front()==-1)
-            {
+        if (u == -1) {
+            if (q.front() == -1) {
                 break;
             }
             q.push(-1);
-            toggle=(toggle+1)%2;
-        }
-        else
-        {
-            if(toggle==0)
-            {
+            toggle = (toggle + 1) % 2;
+        } else {
+            if (toggle == 0) {
                 odd++;
-            }
-            else
-            {
+            } else {
                 even++;
             }
-            for(it=g[u].begin();it!=g[u].end();it++)
-            {
-                if(!visited[*it])
-                {
-                    visited[*it]=1;
+            for (it = g[u].begin(); it != g[u].end(); it++) {
+                if (!visited[*it]) {
+                    visited[*it] = 1;
                     q.push(*it);
                 }
             }
@@ -75,27 +63,24 @@ void color(vector<list<int> >&g,int source,int &odd,int &even,int size)
     }
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int test;
-    cin>>test;
-    while(test--)
-    {
+    cin >> test;
+    while (test--) {
         int n;
-        cin>>n;
-        vector<list<int> >g(n+1);
-        for(int i=0;i<n-1;i++)
-        {
-            int u,v;
-            cin>>u>>v;
+        cin >> n;
+        vector<list<int> > g(n + 1);
+        for (int i = 0; i < n - 1; i++) {
+            int u, v;
+            cin >> u >> v;
             g[u].push_back(v);
             g[v].push_back(u);
         }
-        int odd=0,even=0;
-        color(g,1,odd,even,n);
-        long long int res=(combination(odd)+combination(even))%1000000007;
-        cout<<res<<endl;
+        int odd = 0, even = 0;
+        color(g, 1, odd, even, n);
+        long long int res = (combination(odd) + combination(even)) % 1000000007;
+        cout << res << endl;
     }
     return 0;
 }

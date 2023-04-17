@@ -1,40 +1,43 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #define endl '\n'
 #define inf INT_MAX
 #define pb push_back
-#define present(c,x) ((c).find(x) != (c).end())
+#define present(c, x) ((c).find(x) != (c).end())
 #define mod 1000000007
 #define base 999983
 #define baseinv 943912055
 #define ff first
 #define ss second
-#define tr1(x)                cerr << #x << ": " << x << endl;
-#define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
-#define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
-#define tr4(a, b, c, d)       cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << endl;
-#define tr5(a, b, c, d, e)    cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << " | " << #e << ": " << e << endl;
+#define tr1(x) cerr << #x << ": " << x << endl;
+#define tr2(x, y) cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
+#define tr3(x, y, z) cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
+#define tr4(a, b, c, d) cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << endl;
+#define tr5(a, b, c, d, e) cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << " | " << #e << ": " << e << endl;
 #define tr6(a, b, c, d, e, f) cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << " | " << #e << ": " << e << " | " << #f << ": " << f << endl;
-#define all(a) (a).begin(),(a).end()
+#define all(a) (a).begin(), (a).end()
 using namespace std;
 typedef long long ll;
 
 string initial = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 unordered_map<char, int> mp;
 
-int main(){
-    ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+int main() {
+    ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int i = 0;
-    while(initial[i]) mp[initial[i]] = i++;
-    int test; cin >> test;
+    while (initial[i]) mp[initial[i]] = i++;
+    int test;
+    cin >> test;
     cin.ignore(inf, '\n');
-    while(test--){
+    while (test--) {
         int cnt = 0, res = 0, j = 0;
         string s;
         i = 0;
         getline(cin, s);
-        while(s[j]){
-            if(s[j] != ' ') res += i++ + mp[s[j]];
-            else cnt++, i = 0;
+        while (s[j]) {
+            if (s[j] != ' ')
+                res += i++ + mp[s[j]];
+            else
+                cnt++, i = 0;
             j++;
         }
         res *= (cnt + 1);
@@ -42,4 +45,3 @@ int main(){
     }
     return 0;
 }
-

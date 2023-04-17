@@ -50,19 +50,19 @@ try:
 except ImportError:
     print "mechanize required but missing"
     sys.exit(1)
-    
 
-def getSolutions (path_prefix, path_proxy):
+
+def getSolutions(path_prefix, path_proxy):
     global br, username, password
 
     # create a browser object
     br = Browser()
 
     # add proxy support to browser
-    if len(path_proxy) != 0: 
-        protocol,proxy = options.proxy.split("://")
-        br.set_proxies({protocol:proxy})
-    
+    if len(path_proxy) != 0:
+        protocol, proxy = options.proxy.split("://")
+        br.set_proxies({protocol: proxy})
+
     # let browser fool robots.txt
     br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; \
               rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
@@ -74,22 +74,22 @@ def getSolutions (path_prefix, path_proxy):
 
     # authenticate the user
     print "Authenticating " + username
-    br.open ("http://spoj.com/login")
-    #br.select_form (name="login")
-    #the form no longer is named "login" therefore to access it by id:
-    formcount=0
-    for frm in br.forms():  
-    	if str(frm.attrs["id"])=="login-form":
-    		break
-  	formcount=formcount+1
+    br.open("http://spoj.com/login")
+    # br.select_form (name="login")
+    # the form no longer is named "login" therefore to access it by id:
+    formcount = 0
+    for frm in br.forms():
+        if str(frm.attrs["id"]) == "login-form":
+            break
+        formcount = formcount+1
     br.select_form(nr=formcount)
-    
+
     br["login_user"] = username
     br["password"] = password
 
     # sign in for a day to avoid timeouts
-    #br.find_control(name="autologin").items[0].selected = True
-    #this attribute is missing in the new spoj format
+    # br.find_control(name="autologin").items[0].selected = True
+    # this attribute is missing in the new spoj format
     br.form.action = "http://www.spoj.com/login"
     response = br.submit()
 
@@ -113,39 +113,40 @@ def getSolutions (path_prefix, path_proxy):
     while True:
         temp = siglist.readline()
 
-        if temp=='\------------------------------------------------------------------------------/\n':
+        if temp == '\------------------------------------------------------------------------------/\n':
             # reached end of siglist
             break
 
-        if not len(temp) :
+        if not len(temp):
             print "Reached EOF, siglist format has probably changed," + \
-                    " contact author."
+                " contact author."
             exit(1)
 
         entry = [x.strip() for x in temp.split('|')]
 
         if entry[4] == 'AC' or entry[4].isdigit():
-            mysublist.append (entry)
+            mysublist.append(entry)
 
     print "Done !!!"
     return mysublist
 
+
 def downloadSolutions(mysublist):
     totalsubmissions = len(mysublist)
-    
+
     print "Fetching sources into " + path_prefix
     progress = 0
-    
+
     for entry in mysublist:
-        existing_files = glob.glob(os.path.join(path_prefix, "%s-%s*" % \
-                                                           (entry[3],entry[1])))
+        existing_files = glob.glob(os.path.join(path_prefix, "%s-%s*" %
+                                                (entry[3], entry[1])))
 
         progress += 1
         if len(existing_files) == 1:
             print "%d/%d - %s skipped." % (progress, totalsubmissions, entry[3])
         else:
-            source_code = br.open("http://www.spoj.pl/files/src/save/" + \
-                                                                       entry[1])
+            source_code = br.open("http://www.spoj.pl/files/src/save/" +
+                                  entry[1])
             header = dict(source_code.info())
             filename = ""
             try:
@@ -153,24 +154,26 @@ def downloadSolutions(mysublist):
                 filename = entry[3] + "-" + filename
             except:
                 filename = entry[3] + "-" + entry[1]
-                
-            fp = open( os.path.join(path_prefix, filename), "w")
-            fp.write (source_code.read())
+
+            fp = open(os.path.join(path_prefix, filename), "w")
+            fp.write(source_code.read())
             fp.close
             print "%d/%d - %s done." % (progress, totalsubmissions, filename)
 
     print "Created a backup of %d submission for %s" % \
-                                                    (totalsubmissions, username)
+        (totalsubmissions, username)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
     parser = optparse.OptionParser()
-    parser.add_option("-o", "--outputpath", default="./", type=str, help="Destination directory to store solutions")
-    parser.add_option("-p", "--proxy", default = "", type = str, help = "Proxy , ex- http://username:password@proxy:port")
+    parser.add_option("-o", "--outputpath", default="./",
+                      type=str, help="Destination directory to store solutions")
+    parser.add_option("-p", "--proxy", default="", type=str,
+                      help="Proxy , ex- http://username:password@proxy:port")
 
     (options, args) = parser.parse_args()
-    path_prefix = options.outputpath 
-    path_proxy = options.proxy   
-    
+    path_prefix = options.outputpath
+    path_proxy = options.proxy
+
     downloadSolutions(getSolutions(path_prefix, path_proxy))

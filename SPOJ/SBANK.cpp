@@ -1,5 +1,7 @@
-#include <algorithm>
 #include <limits.h>
+#include <string.h>
+
+#include <algorithm>
 #include <bitset>
 #include <cmath>
 #include <cstdio>
@@ -16,16 +18,14 @@
 #include <set>
 #include <sstream>
 #include <stack>
-#include <utility>
-#include <vector>
-#include <string.h>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
-struct bank
-{
+struct bank {
     int a;
     long long int b;
     int c;
@@ -35,53 +35,42 @@ struct bank
     string input;
 };
 
-bool myfun(struct bank a,struct bank b)
-{
-    if(a.input.compare(b.input)<0)
-    {
+bool myfun(struct bank a, struct bank b) {
+    if (a.input.compare(b.input) < 0) {
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int test;
-    cin>>test;
-    //cout<<test<<endl;
-    while(test--)
-    {
+    cin >> test;
+    // cout<<test<<endl;
+    while (test--) {
         int size;
-        cin>>size;
+        cin >> size;
         cin.ignore(INT_MAX, '\n');
-        //cin.clear();
-        //fflush(stdin);
-        vector<struct bank>arr(size);
-        for(int i=0;i<size;i++)
-        {
-            getline(cin,arr[i].input);
+        // cin.clear();
+        // fflush(stdin);
+        vector<struct bank> arr(size);
+        for (int i = 0; i < size; i++) {
+            getline(cin, arr[i].input);
             // cout<<arr[i].input<<endl;
         }
-        sort(arr.begin(),arr.end(),myfun);
-        int count=1;
-        for(int i=0;i<size-1;i++)
-        {
-            if(arr[i].input==arr[i+1].input)
-            {
+        sort(arr.begin(), arr.end(), myfun);
+        int count = 1;
+        for (int i = 0; i < size - 1; i++) {
+            if (arr[i].input == arr[i + 1].input) {
                 count++;
-            }
-            else
-            {
-                cout<<arr[i].input<<" "<<count<<endl;
-                count=1;
+            } else {
+                cout << arr[i].input << " " << count << endl;
+                count = 1;
             }
         }
-        cout<<arr[size-1].input<<" "<<count<<endl;
-        cout<<"\n";
+        cout << arr[size - 1].input << " " << count << endl;
+        cout << "\n";
     }
     return 0;
 }

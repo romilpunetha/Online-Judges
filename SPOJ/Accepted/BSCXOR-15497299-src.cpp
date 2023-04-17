@@ -2,10 +2,10 @@
 using namespace std;
 
 int main() {
-	long int a,b;
-	cin>>a>>b;
-	cout<<(a^b)<<endl;
-	// your code here
+    long int a, b;
+    cin >> a >> b;
+    cout << (a ^ b) << endl;
+    // your code here
 
-	return 0;
+    return 0;
 }

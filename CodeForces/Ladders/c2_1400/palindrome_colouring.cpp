@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #define endl '\n'
 #define inf INT_MAX
 #define pb push_back
@@ -26,24 +26,28 @@
 #define Graph V<L<int> >
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
-#define all(a) (a).begin(),(a).end()
-#define tr1(x)                cerr << #x << ": " << x << endl;
-#define tr2(x, y)             cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
-#define tr3(x, y, z)          cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
-#define tr4(a, b, c, d)       cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << endl;
-#define tr5(a, b, c, d, e)    cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << " | " << #e << ": " << e << endl;
+#define all(a) (a).begin(), (a).end()
+#define tr1(x) cerr << #x << ": " << x << endl;
+#define tr2(x, y) cerr << #x << ": " << x << " | " << #y << ": " << y << endl;
+#define tr3(x, y, z) cerr << #x << ": " << x << " | " << #y << ": " << y << " | " << #z << ": " << z << endl;
+#define tr4(a, b, c, d) cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << endl;
+#define tr5(a, b, c, d, e) cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << " | " << #e << ": " << e << endl;
 #define tr6(a, b, c, d, e, f) cerr << #a << ": " << a << " | " << #b << ": " << b << " | " << #c << ": " << c << " | " << #d << ": " << d << " | " << #e << ": " << e << " | " << #f << ": " << f << endl;
 using namespace std;
-template <typename A, typename B> inline ostream& operator<<(ostream&os, const pair<A, B> &v) {return os << v.first << ' ' << v.second;}
-template <typename A> inline ostream& operator<<(ostream&os, const vector<A> &v){
-    auto it = v.begin(); 
+template <typename A, typename B>
+inline ostream &operator<<(ostream &os, const pair<A, B> &v) { return os << v.first << ' ' << v.second; }
+template <typename A>
+inline ostream &operator<<(ostream &os, const vector<A> &v) {
+    auto it = v.begin();
     os << *it;
-    for (++it; it != v.end(); 
-    os << ' ' << *it++); 
-    return os; 
+    for (++it; it != v.end();
+         os << ' ' << *it++)
+        ;
+    return os;
 }
-void tr(){cout<<endl;}
-template <typename H, typename...T> inline void tr(H head, T... tail){
+void tr() { cout << endl; }
+template <typename H, typename... T>
+inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
 }
@@ -53,22 +57,27 @@ typedef double dbl;
 typedef long double ldbl;
 
 int solve() {
-    int n, k; cin >> n >> k;
-    string s; cin >> s;
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
     MP<char, int> mp;
-    for(int i = 0; s[i]; i++) mp[s[i]]++;
+    for (int i = 0; s[i]; i++) mp[s[i]]++;
     int ans = 0, count = 0, rem = 0;
-    for(auto &it : mp) {
+    for (auto &it : mp) {
         count += it.ss & 1 ? it.ss - 1 : it.ss;
-        rem += it.ss % 2;;
+        rem += it.ss % 2;
+        ;
     }
     ans += 2 * (count / (2 * k));
     rem += count % (2 * k);
     return rem >= k ? ans + 1 : ans;
 }
- 
-int main(){ 
-    ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
-    int T; cin >> T; while(T--) cout << solve() << endl;
+
+int main() {
+    ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+    int T;
+    cin >> T;
+    while (T--) cout << solve() << endl;
     return 0;
 }

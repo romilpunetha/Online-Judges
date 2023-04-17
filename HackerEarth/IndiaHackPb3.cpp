@@ -1,5 +1,7 @@
-#include <algorithm>
 #include <limits.h>
+#include <string.h>
+
+#include <algorithm>
 #include <bitset>
 #include <cmath>
 #include <cstdio>
@@ -16,69 +18,53 @@
 #include <set>
 #include <sstream>
 #include <stack>
-#include <utility>
-#include <vector>
-#include <string.h>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
-bool myfun(pair<pair<int,double>,int>a ,pair<pair<int,double>,int>b)
-{
-    if(a.first.second<b.first.second)
-    {
+bool myfun(pair<pair<int, double>, int> a, pair<pair<int, double>, int> b) {
+    if (a.first.second < b.first.second) {
         return true;
-    }
-    else if(a.first.second==b.first.second)
-    {
-        if(a.first.first>b.first.first)
-        {
+    } else if (a.first.second == b.first.second) {
+        if (a.first.first > b.first.first) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int test;
-    cin>>test;
-    for(int t=1;t<=test;t++)
-    {
+    cin >> test;
+    for (int t = 1; t <= test; t++) {
         int size;
-        cin>>size;
-        vector<pair<pair<int,double>,int> > result;
-        vector<int> sec(size,0);
-        vector<double> prob(size,0);
-        for(int i=0;i<size;i++)
-        {
-            cin>>sec[i];
+        cin >> size;
+        vector<pair<pair<int, double>, int> > result;
+        vector<int> sec(size, 0);
+        vector<double> prob(size, 0);
+        for (int i = 0; i < size; i++) {
+            cin >> sec[i];
         }
-        for(int i=0;i<size;i++)
-        {
-            cin>>prob[i];
-            prob[i]=1-((prob[i]*1.0)/100);
+        for (int i = 0; i < size; i++) {
+            cin >> prob[i];
+            prob[i] = 1 - ((prob[i] * 1.0) / 100);
         }
-        for(int i=0;i<size;i++)
-        {
-            result.push_back(make_pair(make_pair(sec[i],prob[i]),i));
+        for (int i = 0; i < size; i++) {
+            result.push_back(make_pair(make_pair(sec[i], prob[i]), i));
         }
-        sort(result.begin(),result.end(),myfun);
-        cout<<"Case #"<<t<<": ";
-        for(int i=0;i<size;i++)
-        {
-            cout<<result[i].second<<" ";
+        sort(result.begin(), result.end(), myfun);
+        cout << "Case #" << t << ": ";
+        for (int i = 0; i < size; i++) {
+            cout << result[i].second << " ";
         }
-        cout<<endl;
+        cout << endl;
     }
     return 0;
 }

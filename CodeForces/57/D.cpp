@@ -24,12 +24,13 @@ int main() {
 
     forn(i, N) forn(j, 5) dp[i][j] = INF64;
     dp[0][0] = 0;
-    forn(i, n) forn(j, 4){
+    forn(i, n) forn(j, 4) {
         dp[i + 1][j + (s[i] == h[j])] = min(dp[i + 1][j + (s[i] == h[j])], dp[i][j]);
         dp[i + 1][j] = min(dp[i + 1][j], dp[i][j] + a[i]);
     }
-    for(int i = 0; i <= n; i++){
-        for(int j = 0; j <= 4; j++) cout << dp[i][j] << " "; cout << endl;
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= 4; j++) cout << dp[i][j] << " ";
+        cout << endl;
     }
 
     printf("%lld\n", *min_element(dp[n], dp[n] + 4));
