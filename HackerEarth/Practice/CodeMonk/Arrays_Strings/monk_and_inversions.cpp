@@ -33,8 +33,8 @@ int main() {
         int cnt = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                for (int k = 0; k <= i; k++) {
-                    for (int l = 0; l <= j; l++) {
+                for (int k = i; k < n; k++) {
+                    for (int l = j; l < n; l++) {
                         if (arr[i][j] > arr[k][l]) cnt++;
                     }
                 }

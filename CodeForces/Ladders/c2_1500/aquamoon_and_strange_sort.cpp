@@ -106,7 +106,23 @@ inline void tr(H head, T... tail) {
     tr(tail...);
 }
 
-void solve() {
+bool solve() {
+    int n;
+    cin >> n;
+    Vi arr(n);
+    MP<int, int> mp[2];
+    for (int i = 0, t; i < n; i++) {
+        cin >> t;
+        arr[i] = t;
+        mp[i % 2][t]++;
+    }
+    sort(all(arr));
+    bool flag = true;
+    for (int i = 0; i < n; i++) {
+        mp[i % 2][arr[i]]--;
+        if (mp[i % 2][arr[i]] < 0) flag = false;
+    }
+    return flag;
 }
 
 int main() {
@@ -114,6 +130,9 @@ int main() {
     int T;
     cin >> T;
     while (T--)
-        solve();
+        if (solve())
+            YES;
+        else
+            NO;
     return 0;
 }

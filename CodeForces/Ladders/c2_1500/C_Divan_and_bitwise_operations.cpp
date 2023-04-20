@@ -106,7 +106,30 @@ inline void tr(H head, T... tail) {
     tr(tail...);
 }
 
-void solve() {
+ll M = 1e9 + 7;
+
+ll poww(ll a, ll b) {
+    ll res = 1;
+    while (b) {
+        if (b & 1) res = (res * a) % M;
+        a = (a * a) % M;
+        b >>= 1;
+    }
+    return res;
+}
+
+ll solve() {
+    int n, m;
+    cin >> n >> m;
+    Vll arr(n, 0);
+    ll p = 0;
+    for (int i = 0; i < m; i++) {
+        ll l, r, x;
+        cin >> l >> r >> x;
+        p |= x;
+    }
+    p = (p * poww(2, n - 1)) % M;
+    return p;
 }
 
 int main() {
@@ -114,6 +137,6 @@ int main() {
     int T;
     cin >> T;
     while (T--)
-        solve();
+        cout << solve() << endl;
     return 0;
 }

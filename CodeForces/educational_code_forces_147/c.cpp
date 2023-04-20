@@ -106,7 +106,31 @@ inline void tr(H head, T... tail) {
     tr(tail...);
 }
 
+int A = 26;
+
 void solve() {
+    string s;
+    cin >> s;
+    Vi arr[A];
+    int n = si(s);
+    int ans = n + 1;
+    for (int i = 0; i < A; i++) arr[i].pb(-1);
+    for (int i = 0; i < n; i++) {
+        int j = s[i] - 'a';
+        arr[j].pb(i);
+    }
+    for (int i = 0; i < A; i++) {
+        arr[i].pb(n);
+        int curr = 0;
+        for (int j = 1; j < si(arr[i]); j++) {
+            int x = arr[i][j] - arr[i][j - 1] - 1;
+            int k = 0;
+            while ((1 << k) <= x) k++;
+            curr = max(curr, k);
+        }
+        ans = min(ans, curr);
+    }
+    cout << ans << endl;
 }
 
 int main() {

@@ -107,13 +107,26 @@ inline void tr(H head, T... tail) {
 }
 
 void solve() {
+    int n, m;
+    cin >> n >> m;
+    Vi arr;
+    int ans = 0;
+    for (int i = 0, t; i < n; i++) {
+        cin >> t;
+        arr.pb(t);
+        if (i - 1 >= 0) arr[i] += arr[i - 1];
+        if (m >= arr[i])
+            ans = max(ans, i + 1);
+        else {
+            int x = LB(arr, arr[i] - m);
+            ans = max(ans, i - x);
+        }
+    }
+    cout << ans << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    solve();
     return 0;
 }
