@@ -8,5 +8,5 @@ ll expo(ll a, ll b, ll mod) {
     return res;
 }
 ll mmi(ll n, ll m) {
-    return expo(n, m - 2, m)
+    return expo(n, m - 2, m);
 }
