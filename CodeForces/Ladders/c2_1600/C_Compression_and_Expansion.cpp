@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,15 +99,34 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
-    cerr << endl;
+}
+
+void display(Vi &arr) {
+    int n = arr.size();
+    for (int i = 0; i < n - 1; i++) cout << arr[i] << ".";
+    cout << arr[si(arr) - 1] << endl;
 }
 
 void solve() {
+    int n;
+    cin >> n;
+    Vi arr;
+    for (int i = 0; i < n; i++) {
+        int t;
+        cin >> t;
+        if (t == 1)
+            arr.pb(t);
+        else {
+            while (arr[si(arr) - 1] != t - 1) arr.pop_back();
+            arr[si(arr) - 1] = t;
+        }
+        display(arr);
+    }
 }
 
 int main() {

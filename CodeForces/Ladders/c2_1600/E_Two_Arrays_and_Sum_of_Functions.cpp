@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -89,14 +107,43 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+const int mod = 998244353;
+
 void solve() {
+    ll n;
+    cin >> n;
+    Vll arr(n), brr(n);
+
+    for (ll i = 0; i < n; i++) {
+        cin >> arr[i];
+        arr[i] *= (i + 1) * (n - i);
+    }
+
+    set<pair<ll, ll>> st;
+    for (int i = 0; i < n; i++) st.insert({ arr[i], i });
+
+    multiset<ll> st2;
+    for (int i = 0; i < n; i++) {
+        int t;
+        cin >> t;
+        st2.insert(t);
+    }
+
+    for (auto &it : st) {
+        brr[it.ss] = *st2.rbegin();
+        st2.erase(st2.find(*st2.rbegin()));
+    }
+
+    ll ans = 0;
+    for (int i = 0; i < n; i++) {
+        ans += ((arr[i] % mod) * (brr[i] % mod)) % mod;
+        ans %= mod;
+    }
+    cout << ans << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    solve();
     return 0;
 }

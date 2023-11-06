@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -90,6 +108,42 @@ inline void tr(H head, T... tail) {
 }
 
 void solve() {
+    int m, n;
+    cin >> m >> n;
+
+    if (n == 1) {
+        cout << 0 << endl;
+        for (int i = 0; i < m; i++) cout << 0 << endl;
+        return;
+    }
+
+    if (m >= n) {
+        Vi arr(n);
+        for (int i = 1; i <= n; i++) arr[i - 1] = i % n;
+        cout << n << endl;
+        for (int i = 0; i < m - n + 1; i++) {
+            for (auto &it : arr) cout << it << " ";
+            cout << endl;
+        }
+        int k = 0;
+        for (int i = 1; i <= n - 1; i++) {
+            for (int j = 0; j < n; j++) cout << arr[(j + k) % n] << " ";
+            cout << endl;
+            k++;
+        }
+
+    } else {
+        Vi arr(m + 1);
+        for (int i = 0; i <= m; i++) arr[i] = (i + 1) % (m + 1);
+        cout << m + 1 << endl;
+        int k = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j <= m; j++) cout << arr[(j + k) % (m + 1)] << " ";
+            for (int j = m + 1; j < n; j++) cout << j << " ";
+            cout << endl;
+            k++;
+        }
+    }
 }
 
 int main() {

@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,7 +99,7 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
@@ -89,14 +107,32 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+int arr[1000100];
+int n;
+bool check(int k) {
+    for (int i = k, t = n; i > 0; i--, t--) {
+        if (arr[i] * 2 > arr[t]) return false;
+    }
+    return true;
+}
+
 void solve() {
+    cin >> n;
+    for (int i = 1; i <= n; i++) cin >> arr[i];
+    sort(arr + 1, arr + n + 1);
+    int start = 0, end = n / 2, mid;
+    while (start < end) {
+        mid = (start + end + 1) / 2;
+        if (check(mid))
+            start = mid;
+        else
+            end = mid - 1;
+    }
+    cout << n - start << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    solve();
     return 0;
 }

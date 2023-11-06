@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,15 +99,40 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
-    cerr << endl;
 }
 
+class Compare {
+   public:
+    bool operator()(const Vi &a, const Vi &b) {
+        if (a[0] == b[0]) return a[1] > b[1];
+        return a[0] < b[0];
+    }
+};
+
 void solve() {
+    int n;
+    cin >> n;
+    Vi arr(n, 0);
+    priority_queue<vector<int>, vector<vector<int>>, Compare> pq;
+    pq.push({ n, 0, n - 1 });
+    int k = 1;
+    while (!pq.empty()) {
+        vector<int> t = pq.top();
+        pq.pop();
+        int l = t[1], r = t[2];
+        if (l > r) continue;
+        int mid = (t[1] + t[2]) / 2;
+        arr[mid] = k++;
+        pq.push({ mid - l, l, mid - 1 });
+        pq.push({ r - mid, mid + 1, r });
+    }
+    for (auto &it : arr) cout << it << " ";
+    cout << endl;
 }
 
 int main() {

@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -90,13 +108,33 @@ inline void tr(H head, T... tail) {
 }
 
 void solve() {
+    string s, t;
+    cin >> s >> t;
+    Vi arr, brr;
+    for (int i = 0, j = 0; s[i] && t[j]; i++) {
+        if (s[i] == t[j]) {
+            arr.pb(i);
+            j++;
+        }
+    }
+
+    for (int i = si(s) - 1, j = si(t) - 1; i >= 0 && j >= 0; i--) {
+        if (s[i] == t[j]) {
+            brr.pb(i);
+            j--;
+        }
+    }
+    reverse(all(brr));
+
+    int ans = max(si(s) - arr[si(arr) - 1] - 1, brr[0]);
+    for (int i = 0; i + 1 < si(arr); i++) {
+        ans = max(ans, brr[i + 1] - arr[i] - 1);
+    }
+    cout << ans << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    solve();
     return 0;
 }

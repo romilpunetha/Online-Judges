@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -89,7 +107,18 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+int n;
+ll arr[(int)2e5 + 10];
+
 void solve() {
+    cin >> n;
+    ll ans = 0, suf = 0;
+    for (int i = 1; i <= n; i++) cin >> arr[i];
+    for (int i = n; i >= 1; i--) {
+        ans = max(ans, suf + ((i & 1) ? arr[i] : 0LL));
+        suf += arr[i] > 0 ? arr[i] : 0LL;
+    }
+    cout << ans << endl;
 }
 
 int main() {

@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,7 +99,7 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
@@ -90,13 +108,38 @@ inline void tr(H head, T... tail) {
 }
 
 void solve() {
+    int n;
+    cin >> n;
+    Vi arr(n), brr, crr;
+    for (auto &it : arr) cin >> it;
+    if (n < 3) {
+        cout << n << endl;
+        return;
+    }
+    int cnt = 1, ans = 1;
+    for (int i = 1; i < n; i++) {
+        if (arr[i - 1] >= arr[i]) {
+            brr.pb(i);
+            crr.pb(cnt);
+            cnt = 1;
+        } else
+            cnt++;
+        ans = max(ans, min(cnt + 1, n));
+    }
+    brr.pb(n), crr.pb(cnt);
+    tr(brr), tr(crr);
+    for (int i = 0; i < brr.size(); i++) {
+        if (brr[i] + 1 >= n) continue;
+        if (arr[brr[i] + 1] - arr[brr[i] - 1] >= 2)
+            ans = max(ans, crr[i] + crr[i + 1]);
+        if (brr[i] - 2 >= 0 && arr[brr[i]] - arr[brr[i] - 2] >= 2)
+            ans = max(ans, crr[i] + crr[i + 1]);
+    }
+    cout << ans << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    solve();
     return 0;
 }

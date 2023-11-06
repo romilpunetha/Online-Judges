@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -89,7 +107,25 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+int n;
+int get(int t) {
+    return (2 * n) - t - 1;
+}
+
 void solve() {
+    cin >> n;
+    vector<int> arr(n * 2);
+    for (auto &it : arr) cin >> it;
+    sort(all(arr));
+
+    int dist = 0;
+    for (int i = n - 2; i >= 0; i--) {
+        dist += abs(arr[i] - arr[i + 1]) + abs(arr[get(i)] - arr[get(i + 1)]);
+    }
+    cout << dist << endl;
+    for (int i = n - 1; i >= 0; i--) {
+        cout << arr[i] << " " << arr[get(i)] << endl;
+    }
 }
 
 int main() {

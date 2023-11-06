@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,22 +99,39 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
-    cerr << endl;
 }
 
 void solve() {
+    int n, k;
+    cin >> n >> k;
+    V<Pll> arr(n);
+    for (int i = 0; i < n; i++) cin >> arr[i].ss >> arr[i].ff;
+    sort(all(arr));
+    reverse(all(arr));
+
+    ll ans = 0, sum = 0;
+    multiset<ll> st;
+    for (int i = 0; i < n; i++) {
+        if (st.size() == k && arr[i].ss < *st.begin()) continue;
+        st.insert(arr[i].ss);
+        sum += arr[i].ss;
+        if (st.size() > k) {
+            sum -= *st.begin();
+            st.erase(st.begin());
+        }
+        if (ans < sum * arr[i].ff) ans = sum * arr[i].ff;
+    }
+
+    cout << ans << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    solve();
     return 0;
 }

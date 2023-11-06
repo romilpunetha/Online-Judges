@@ -89,14 +89,60 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+typedef struct Trie {
+    vector<Trie *> arr;
+    int num;
+
+    Trie() {
+        arr.resize(2);
+    };
+
+    void insert(int x) {
+        Trie *root = this;
+        for (int i = 30; i >= 0; i--) {
+            int t = (x >> i) & 1;
+            if (!root->arr[t]) root->arr[t] = new Trie();
+            root = root->arr[t];
+        }
+        root->num = x;
+    }
+
+    int get(int x) {
+        Trie *root = this;
+        for (int i = 30; i >= 0; i--) {
+            int t = (x >> i) & 1;
+            if (root->arr[!t])
+                root = root->arr[!t];
+            else
+                root = root->arr[t];
+        }
+        return root->num;
+    }
+} Trie;
+
 void solve() {
+    int n;
+    cin >> n;
+    vector<int> arr(n - 1);
+    for (auto &it : arr) cin >> it;
+    Trie *root = new Trie();
+    root->insert(arr[0]);
+    for (int i = 1; i < n - 1; i++) {
+        arr[i] ^= arr[i - 1];
+        root->insert(arr[i]);
+    }
+    vector<int> brr(n);
+    for (int i = 0; i < n; i++) {
+        if ((i ^ root->get(i)) > n - 1) continue;
+        brr[0] = i;
+        for (int j = 1; j < n; j++) brr[j] = i ^ arr[j - 1];
+        for (auto &it : brr) cout << it << " ";
+        return;
+    }
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    solve();
     return 0;
 }

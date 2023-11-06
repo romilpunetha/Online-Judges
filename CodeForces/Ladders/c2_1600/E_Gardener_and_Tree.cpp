@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,15 +99,50 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
-    cerr << endl;
 }
 
 void solve() {
+    int n, k;
+    cin >> n >> k;
+    Graph g(n + 1);
+    Vi degree(n + 1, 0), level(n + 1, 0), visited(n + 1, 0);
+    for (int i = 1; i < n; i++) {
+        int u, v;
+        cin >> u >> v;
+        degree[u]++, degree[v]++;
+        g[u].push_back(v), g[v].push_back(u);
+    }
+
+    queue<int> q;
+    for (int i = 1; i <= n; i++)
+        if (degree[i] == 1) q.push(i), visited[i] = 1;
+
+    int cnt = 1;
+    while (!q.empty()) {
+        int k = q.size();
+        for (int i = 0; i < k; i++) {
+            int t = q.front();
+            q.pop();
+            visited[t] = 1;
+            level[t] = cnt;
+            for (auto &it : g[t]) {
+                if (visited[it]) continue;
+                degree[it]--;
+                if (degree[it] == 1) q.push(it);
+            }
+        }
+        cnt++;
+    }
+
+    int ans = 0;
+    for (int i = 1; i <= n; i++)
+        if (level[i] > k) ans++;
+    cout << ans << endl;
 }
 
 int main() {

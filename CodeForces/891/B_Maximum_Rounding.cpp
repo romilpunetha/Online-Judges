@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,15 +99,39 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
-    cerr << endl;
 }
 
 void solve() {
+    string s;
+    cin >> s;
+    int i = 0, flag = 0;
+    for (; s[i]; i++) {
+        if (s[i] >= '5') {
+            flag = 1;
+            break;
+        }
+    }
+    if (!flag) {
+        cout << s << endl;
+        return;
+    }
+
+    int t = i;
+    while (s[t]) s[t++] = '0';
+
+    i--;
+    while (i >= 0 && s[i] == '4') s[i--] = '0';
+
+    if (i == -1)
+        cout << 1;
+    else
+        s[i]++;
+    cout << s << endl;
 }
 
 int main() {

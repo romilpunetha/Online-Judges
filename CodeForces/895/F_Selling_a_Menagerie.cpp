@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -89,7 +107,78 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+const int limit = 1e5 + 10;
+Vll arr(limit), brr(limit), ans, incoming;
+V<bool> visited;
+
+Graph g;
+int n;
+
+void dfs(int u, Vi &crr) {
+    if (visited[u]) return;
+    visited[u] = true;
+    crr.pb(u);
+    for (auto &it : g[u])
+        if (!visited[it]) dfs(it, crr);
+}
+
+void util(int i) {
+    Vi crr;
+    dfs(i, crr);
+    ll res = 1;
+    for (auto &it : crr) res += 2 * brr[it];
+    ll mx = 0, k = -1;
+    for (int i = 0; i < si(crr); i++) {
+        ll t = res - brr[crr[i]];
+        if (mx < t) {
+            mx = t;
+            k = i;
+        }
+    }
+
+    for (int i = 0; i < si(crr); i++) {
+        ++k;
+        k = k % si(crr);
+        ans.pb(crr[k]);
+    }
+}
+
 void solve() {
+    cin >> n;
+
+    ans.clear();
+    incoming.clear();
+    incoming.resize(n + 1, 0);
+    visited.clear();
+    visited.resize(n + 1, 0);
+    g.clear();
+    g.resize(n + 1);
+
+    for (int i = 1; i <= n; i++) cin >> arr[i];
+    for (int i = 1; i <= n; i++) cin >> brr[i];
+
+    for (int i = 1; i <= n; i++) {
+        incoming[arr[i]]++;
+        g[i].pb(arr[i]);
+    }
+
+    queue<int> q;
+    for (int i = 1; i <= n; i++)
+        if (!incoming[i]) q.push(i);
+
+    while (!q.empty()) {
+        int t = q.front();
+        visited[t] = true;
+        q.pop();
+        ans.pb(t);
+        incoming[arr[t]]--;
+        if (!incoming[arr[t]]) q.push(arr[t]);
+    }
+
+    for (int i = 1; i <= n; i++)
+        if (!visited[i]) util(i);
+    for (auto &it : ans) cout << it << " ";
+    cout << endl;
 }
 
 int main() {

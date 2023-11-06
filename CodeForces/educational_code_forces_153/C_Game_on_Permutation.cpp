@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -89,7 +107,50 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+typedef struct Bit {
+    Vi arr;
+    int limit;
+
+    Bit(int k) {
+        limit = k;
+        arr.resize(limit, 0);
+    }
+
+    void insert(int i) {
+        while (i < limit) {
+            arr[i]++;
+            i += i & -i;
+        }
+    }
+
+    int sum(int i) {
+        int res = 0;
+        while (i) {
+            res += arr[i];
+            i -= i & -i;
+        }
+        return res;
+    }
+} Bit;
+
 void solve() {
+    int n;
+    cin >> n;
+    Vi arr(n);
+    for (auto &it : arr) cin >> it;
+    int ans = 0;
+    Bit tree1 = Bit(n + 10);
+    Bit tree2 = Bit(n + 10);
+    for (int i = 0; i < n; i++) {
+        int cnt1 = tree1.sum(arr[i] - 1);
+        int cnt2 = tree2.sum(arr[i] - 1);
+        if (cnt1 > 0 && cnt1 == cnt2)
+            ans++;
+        else
+            tree1.insert(arr[i]);
+        tree2.insert(arr[i]);
+    }
+    cout << ans << endl;
 }
 
 int main() {

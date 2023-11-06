@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -90,13 +108,43 @@ inline void tr(H head, T... tail) {
 }
 
 void solve() {
+    int n;
+    cin >> n;
+    vector<vector<int>> arr(n);
+    map<vector<int>, ll> mp;
+    for (int i = 0; i < n; i++) {
+        string s;
+        cin >> s;
+        int t = s.size();
+        vector<int> p(t + 1, 0);
+        for (int j = 0; s[j]; j++) p[j + 1] = p[j] + s[j] - '0';
+        arr[i] = p;
+        mp[{ t, p[s.size()] }]++;
+    }
+
+    ll ans = 0;
+    for (int i = 0; i < n; i++) {
+        int len = arr[i].size();
+        for (int k = 1; k <= 5; k++) {
+            if (k > len - 1) continue;
+            if ((len - 1 + k) % 2 != 0) continue;
+            int mid = (len - 1 + k) / 2;
+            int act = arr[i][len - 1] - arr[i][mid - k];
+            ans += mp[{ k, act - arr[i][mid - k] }];
+        }
+
+        for (int k = 1; k <= 5; k++) {
+            if (k >= len - 1) continue;
+            if ((len - 1 + k) % 2 != 0) continue;
+            int mid = (len - 1 + k) / 2;
+            ans += mp[{ k, 2 * arr[i][mid] - arr[i][len - 1] }];
+        }
+    }
+    cout << ans << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    solve();
     return 0;
 }

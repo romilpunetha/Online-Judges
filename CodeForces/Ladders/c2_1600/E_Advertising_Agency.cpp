@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,15 +99,57 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
-    cerr << endl;
+}
+
+const int mod = 1e9 + 7;
+
+ll expo(ll a, ll b, ll mod) {
+    ll res = 1;
+    while (b) {
+        if (b & 1) res = (res * a) % mod;
+        a = (a * a) % mod;
+        b >>= 1;
+    }
+    return res;
+}
+
+ll mmi(ll n, ll m) {
+    return expo(n, m - 2, m);
+}
+
+ll nCr(int n, int r) {
+    if (r > n - r) return nCr(n, n - r);
+    ll ans = 1;
+    for (int i = 1; i <= r; i++, n--) {
+        ans = (((ans * n) % mod) * mmi(i, mod)) % mod;
+        ans = (ans + mod) % mod;
+    }
+    return ans;
 }
 
 void solve() {
+    int n, k;
+    cin >> n >> k;
+    Vi arr(n, 0);
+    map<int, int> mp;
+
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+        mp[arr[i]]++;
+    }
+
+    sort(all(arr));
+    reverse(all(arr));
+    int t = arr[k - 1], i = k - 1;
+    while (i >= 0 && arr[i] == t) i--;
+    int cnt = k - i - 1;
+
+    cout << nCr(mp[t], cnt) << endl;
 }
 
 int main() {

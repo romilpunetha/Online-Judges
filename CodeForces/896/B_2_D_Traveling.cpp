@@ -7,6 +7,25 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define VVl V<V<ll>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -89,7 +108,31 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+VVl arr(2e5 + 10, Vll(2));
+
+ll dist(int i, int j) {
+    return abs(arr[i][0] - arr[j][0]) + abs(arr[i][1] - arr[j][1]);
+}
+
 void solve() {
+    int n, k, a, b;
+    cin >> n >> k >> a >> b;
+    for (int i = 1; i <= n; i++) cin >> arr[i][0] >> arr[i][1];
+    ll mxA = LLONG_MAX, mxB = LLONG_MAX, nearA = b, nearB = a;
+
+    for (int i = 1; i <= k; i++) {
+        if (dist(i, a) < mxA) {
+            mxA = dist(i, a);
+            nearA = i;
+        }
+
+        if (dist(i, b) < mxB) {
+            mxB = dist(i, b);
+            nearB = i;
+        }
+    }
+    ll ans = min(dist(a, b), dist(nearA, a) + dist(nearB, b));
+    cout << ans << endl;
 }
 
 int main() {

@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,15 +99,40 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
-    cerr << endl;
 }
 
+int n, m, d;
+
+int arr[100100];
+
 void solve() {
+    cin >> n >> m >> d;
+
+    for (int i = 1; i <= m; i++) cin >> arr[i];
+    arr[0] = 1, arr[m + 1] = n + 1;
+
+    int sum = 0;
+    for (int i = 0; i <= m; i++) sum += (arr[i + 1] - arr[i] + d - 1) / d;
+
+    int mn = sum, cnt = 0;
+    for (int i = 1; i <= m; i++) {
+        int l = (arr[i] - arr[i - 1] + d - 1) / d;
+        int r = (arr[i + 1] - arr[i] + d - 1) / d;
+        int t = (arr[i + 1] - arr[i - 1] + d - 1) / d;
+        int k = sum - l - r + t;
+        if (k < mn) {
+            mn = k;
+            cnt = 0;
+        }
+        if (k == mn)
+            cnt++;
+    }
+    cout << mn << " " << cnt << endl;
 }
 
 int main() {

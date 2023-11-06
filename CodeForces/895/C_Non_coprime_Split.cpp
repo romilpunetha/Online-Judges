@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -89,7 +107,33 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
+int getSmallestFactor(int n) {
+    for (int i = 2; i * i < n; i++) {
+        if (n % i == 0) return i;
+    }
+    return -1;
+}
+
 void solve() {
+    int l, r;
+    cin >> l >> r;
+
+    if (r - l >= 1) {
+        if (r / 2 > 1)
+            cout << r / 2 << " " << r / 2 << endl;
+        else
+            cout << -1 << endl;
+        return;
+    }
+
+    for (int i = 2; i * i <= l; i++) {
+        if (l % i != 0) continue;
+        if (gcd(i, l - i) != -1) {
+            cout << i << " " << l - i << endl;
+            return;
+        }
+    }
+    cout << -1 << endl;
 }
 
 int main() {

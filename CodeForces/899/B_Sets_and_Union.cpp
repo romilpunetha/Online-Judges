@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -90,6 +108,40 @@ inline void tr(H head, T... tail) {
 }
 
 void solve() {
+    int n, m;
+    cin >> n;
+    VVi arr(50, Vi(50, 0));
+    Vi brr(50, 0);
+    set<int> st;
+    for (int i = 0; i < n; i++) {
+        cin >> m;
+        Vi tmp(50, 0);
+        for (int j = 0; j < m; j++) {
+            int t;
+            cin >> t;
+            t--;
+            tmp[t]++;
+            st.insert(t);
+            brr[t]++;
+        }
+        for (int j = 0; j < 50; j++) {
+            if (!tmp[j]) continue;
+            for (int k = 0; k < 50; k++) {
+                arr[j][k] += tmp[k];
+            }
+        }
+    }
+
+    int ans = 0;
+    for (int i = 0; i < 50; i++) {
+        for (int j = 0; j < 50; j++) brr[j] -= arr[i][j];
+        set<int> st2;
+        for (int j = 0; j < 50; j++)
+            if (brr[j]) st2.insert(j);
+        if (si(st2) < si(st)) ans = max(ans, si(st2));
+        for (int j = 0; j < 50; j++) brr[j] += arr[i][j];
+    }
+    cout << ans << endl;
 }
 
 int main() {

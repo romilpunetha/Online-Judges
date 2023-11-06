@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -89,14 +107,63 @@ inline void tr(H head, T... tail) {
     cerr << endl;
 }
 
-void solve() {
+ST<int> ans;
+Graph g;
+Vi visited, init, last;
+int t;
+
+void dfs(int u, int parent) {
+    int children = 0;
+    visited[u] = true;
+    init[u] = last[u] = t++;
+
+    for (auto &it : g[u]) {
+        if (it == parent) continue;
+        if (visited[it])
+            last[u] = min(last[u], init[it]);
+        else {
+            children++, dfs(it, u);
+            last[u] = min(last[u], last[it]);
+            if (parent != -1 && init[u] <= last[it]) ans.insert(u);
+        }
+    }
+    if (parent == -1 && children > 1) ans.insert(u);
+}
+
+void solve(int n, int m) {
+    g.clear();
+    g.resize(n);
+    visited.clear();
+    visited.resize(n, 0);
+    init.clear();
+    init.resize(n, 0);
+    last.clear();
+    last.resize(n, 0);
+    ans.clear();
+
+    t = 1;
+
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        u--, v--;
+        g[u].pb(v);
+        g[v].pb(u);
+    }
+
+    for (int i = 0; i < n; i++)
+        if (!visited[i]) dfs(i, -1);
+    cout << ans.size() << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    int n, m;
+    while (1) {
+        cin >> n >> m;
+        if (n == 0 && m == 0) break;
+        solve(n, m);
+    }
+
     return 0;
 }

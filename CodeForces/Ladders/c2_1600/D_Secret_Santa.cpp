@@ -7,6 +7,24 @@
 #define baseinv 943912055
 #define ff first
 #define ss second
+#define V vector
+#define Vi V<int>
+#define VVi V<V<int>>
+#define Vll V<ll>
+#define L list
+#define P pair
+#define MP map
+#define ST set
+#define UM unordered_map
+#define MM multimap
+#define UMM unordered_multimap
+#define MST multiset
+#define UST unordered_set
+#define UMS unordered_multiset
+#define PQ priority_queue
+#define Pii P<int, int>
+#define Pll P<long long, long long>
+#define Graph V<L<int>>
 #define YES cout << "YES" << endl
 #define NO cout << "NO" << endl
 #define Yes cout << "Yes" << endl
@@ -81,17 +99,51 @@ inline ostream &operator<<(ostream &os, const vector<A> &v) {
         ;
     return os;
 }
-void tr() { cerr << endl; }
+void tr() { cout << endl; }
 template <typename H, typename... T>
 inline void tr(H head, T... tail) {
     cerr << head << ' ';
     tr(tail...);
-    cerr << endl;
 }
 
 void solve() {
-}
+    int n;
+    cin >> n;
 
+    set<int> st, st2;
+    map<int, int> mp;
+    Vi arr(n + 1, 0), brr, crr(n + 1, 0);
+
+    for (int i = 1; i <= n; i++) st2.insert(i);
+
+    for (int i = 1; i <= n; i++) {
+        cin >> arr[i];
+        if (st.find(arr[i]) != st.end())
+            continue;
+        crr[i] = arr[i];
+        mp[arr[i]] = i;
+        st.insert(arr[i]);
+        st2.erase(arr[i]);
+    }
+
+    for (auto &it : st2) brr.pb(it);
+
+    int ans = n - brr.size();
+    int k = 0;
+    for (int i = 1; i <= n; i++) {
+        if (crr[i]) continue;
+        crr[i] = brr[k];
+        if (crr[i] == i) {
+            crr[i] = arr[i];
+            crr[mp[arr[i]]] = brr[k];
+            mp[arr[i]] = i;
+        }
+        k = (k + 1) % brr.size();
+    }
+    cout << ans << endl;
+    for (int i = 1; i <= n; i++) cout << crr[i] << " ";
+    cout << endl;
+}
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int T;
